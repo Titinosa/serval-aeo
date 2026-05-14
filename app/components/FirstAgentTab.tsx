@@ -167,11 +167,6 @@ export default function FirstAgentTab() {
         The First Agent
       </h2>
 
-      {/* ── Section title ─────────────────────────────────────────────── */}
-      <h3 style={{ color: "#fafafa", fontSize: 20, fontWeight: 700, letterSpacing: "-0.015em", marginBottom: 16 }}>
-        The Agent Diagram
-      </h3>
-
       {/* ── Diagram + panel ──────────────────────────────────────────── */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 16, alignItems: "start" }}>
 
