@@ -231,9 +231,12 @@ export default function AnalysisTab() {
       </div>
 
       {/* Pull quote */}
+      <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 11.5, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>
+        Comparison Content Example
+      </p>
       <div style={{ ...card, borderLeft: "3px solid #7c3aed", background: "rgba(124,58,237,0.05)", padding: "16px 20px", marginBottom: 20 }}>
         <p style={{ color: "#a1a1aa", fontStyle: "italic", lineHeight: 1.7, fontSize: 14 }}>
-          On March 15, we published "Best Moveworks Alternatives". The next day, Google AI Overviews visibility jumped from 3.5% to 7%, and continued climbing to 24% over the following two weeks. Every subsequent "X alternatives" article (Freshservice, Jira SM) correlates with a step-up in visibility.
+          On March 15, we published &ldquo;Best Moveworks Alternatives&rdquo;. The next day, Google AI Overviews visibility jumped from 3.5% to 7%, and continued climbing to 24% over the following two weeks. Every subsequent &ldquo;X alternatives&rdquo; article (Freshservice, Jira SM) correlates with a step-up in visibility.
         </p>
       </div>
 
@@ -438,12 +441,11 @@ export default function AnalysisTab() {
         </table>
       </div>
 
-      {/* Insights 5–7 */}
-      {[
-        { n: 5, text: 'The content that best delivers results are roundups and comparisons exclusively. Every Serval cited page in the citation analysis shows "best X," "top X," or "X alternatives" format.' },
-        { n: 6, text: "Natural Language Workflow Automation is our best-performing topic in the dataset, but based on the low execution numbers, it's likely the one we are tracking the least (assuming less ProFound prompts for this topic). Every dollar of content investment here compounds on an already strong foundation." },
-        { n: 7, text: 'Competitor Targets as a topic is our biggest opportunity. The citation data proves this with the ranks 1–7 are all "best ITSM tools" roundups (console, oneio, teamdynamix, techradar, sysaid, monday, gartner) and Serval isn\'t on any of them. This is also the only topic with real proven search volume (17,025/mo), so most likely to convert to real leads.' },
-      ].map(({ n, text }) => (
+      {/* Insights 5–6 */}
+      {([
+        { n: 5, text: <><strong style={{ color: "#fafafa" }}>Natural Language Workflow Automation</strong> is our best-performing topic in the dataset, but based on the low execution numbers, it&apos;s likely the one we are tracking the least (assuming less ProFound prompts for this topic). Every dollar of content investment here compounds on an already strong foundation.</> },
+        { n: 6, text: <><strong style={{ color: "#fafafa" }}>Competitor Targets</strong> as a topic is our biggest opportunity. The citation data proves this with the ranks 1–7 are all &ldquo;best ITSM tools&rdquo; roundups (console, oneio, teamdynamix, techradar, sysaid, monday, gartner) and Serval isn&apos;t on any of them. This is also the only topic with real proven search volume (17,025/mo), so most likely to convert to real leads.</> },
+      ] as { n: number; text: React.ReactNode }[]).map(({ n, text }) => (
         <div key={n} style={{ display: "flex", gap: 16, marginBottom: 24 }}>
           <div style={insightNum}>{n}</div>
           <p style={{ color: "#d4d4d8", lineHeight: 1.75, fontSize: 15.5 }}>{text}</p>
@@ -475,7 +477,7 @@ export default function AnalysisTab() {
                   onMouseEnter={(e) => ((e.currentTarget as HTMLTableRowElement).style.background = "#1a1a1e")}
                   onMouseLeave={(e) => ((e.currentTarget as HTMLTableRowElement).style.background = "transparent")}
                 >
-                  <td style={{ padding: "12px 16px", color: "#d4d4d8", fontSize: 13 }}>{row.topic}</td>
+                  <td style={{ padding: "12px 16px", color: (row.topic === "Natural Language Workflow Automation" || row.topic === "Competitor Targets") ? "#fafafa" : "#d4d4d8", fontSize: 13, fontWeight: (row.topic === "Natural Language Workflow Automation" || row.topic === "Competitor Targets") ? 700 : 400 }}>{row.topic}</td>
                   <td style={{ padding: "12px 16px", color: "#a1a1aa", fontSize: 13, textAlign: "center" }}>{row.rank}</td>
                   <td style={{ padding: "12px 16px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
