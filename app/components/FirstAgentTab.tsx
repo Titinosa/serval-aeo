@@ -3,6 +3,23 @@
 import { useState } from "react";
 import Image from "next/image";
 
+/* ── SVG node badges — render small claude / db icons inside diagram nodes ── */
+function NodeBadges({ y, claude, db }: { y: number; claude?: boolean; db?: boolean }) {
+  const size = 13;
+  const topY = y + 5;
+  if (claude && db) {
+    return (
+      <>
+        <image href="/claude-color.png" x={230} y={topY} width={size} height={size} />
+        <image href="/db-orange.png"    x={250} y={topY} width={size} height={size} />
+      </>
+    );
+  }
+  if (claude) return <image href="/claude-color.png" x={250} y={topY} width={size} height={size} />;
+  if (db)     return <image href="/db-orange.png"    x={250} y={topY} width={size} height={size} />;
+  return null;
+}
+
 /* ── Inline icons for claude-sonnet and DB tokens in detail text ──────── */
 const ICON_RE = /(claude-sonnet|Published Content DB|Performance DB)/gi;
 
@@ -121,11 +138,12 @@ const STEPS: Record<string, StepDetail> = {
     guardrail: "No article publishes without explicit human approval. Revise notes are appended to the brief before returning to step 05 — agent must address each note specifically on re-submission. Reject reason is logged to Performance DB as a negative signal.",
   },
   dist: {
-    name: "11 · Distribution agent handoff", tool: "GSC API · sitemap · Slack · HubSpot",
-    input: "Approved article + metadata.",
-    output: "Published URL · GSC submission confirmation · sitemap update · team Slack notification · LinkedIn post draft (requires separate human approval) · HubSpot lead source tag set to \"AI search\".",
-    prompt: "No AI call. Pure task execution.",
-    guardrail: "Writes article record to Published Content DB immediately — prevents future duplicate briefs on this angle. Writes baseline entry to Performance DB — AEO visibility tracking begins from publish date. LinkedIn post requires separate human approval.",
+    name: "11 · Distribution agent handoff",
+    tool: "GSC API · sitemap · Slack · HubSpot · claude-sonnet",
+    input: "Approved article body + metadata (title, target prompts, publish URL, topic bucket, angle list from step 01).",
+    output: "Published URL · GSC submission confirmation · sitemap update · team Slack notification · LinkedIn post draft (requires separate human approval before sending) · HubSpot lead source tag set to \"AI search\" · Published Content DB record · Performance DB baseline entry.",
+    prompt: "All distribution tasks except LinkedIn are rule-based execution — API calls, templated messages, structured DB inserts. One AI call for the LinkedIn draft:\n\n\"You are writing a LinkedIn post for Serval, an AI-native ITSM platform. Read this article and write a post under 200 words that surfaces the sharpest insight, avoids sounding promotional, and ends with a link. Match Serval's voice: direct, specific, no buzzwords. Lead with a specific data point or counterintuitive claim from the article; not a generic summary.\"",
+    guardrail: "DB writes (Published Content DB + Performance DB) happen immediately on publish; these do not wait for LinkedIn approval. LinkedIn post requires explicit human approval before sending. Published Content DB write happens before any other step; if the DB write fails, halt and alert. Angle list from step 01 is written to Published Content DB alongside the URL so future redundancy checks in step 02 have the full semantic record, not just the title.",
   },
   archive: {
     name: "Archive · rejected", tool: "Logging",
@@ -291,6 +309,15 @@ export default function FirstAgentTab() {
             {N("package",  680, 52, "gray",   "09", "Package + validate",           "rule checks + claude-sonnet · meta, links, CTA")}
             {N("human",    758, 76, "coral",  "10", "Human review gate",            "draft · eval scorecard · schema",       undefined, "approve · revise · reject", WARN_C)}
             {N("dist",     886, 52, "green",  "11", "Distribution agent handoff",   "writes to Published DB + Performance DB", AMB)}
+
+            {/* Node badges — claude / db indicators */}
+            <NodeBadges y={126} db />
+            <NodeBadges y={204} claude db />
+            <NodeBadges y={282} claude />
+            <NodeBadges y={360} claude />
+            <NodeBadges y={450} claude />
+            <NodeBadges y={680} claude />
+            <NodeBadges y={886} claude db />
 
           </svg>
         </div>
