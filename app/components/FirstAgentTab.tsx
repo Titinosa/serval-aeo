@@ -51,9 +51,9 @@ const STEPS: Record<string, StepDetail> = {
     name: "02 · Published Content DB check",
     tool: "Vector similarity search + claude-sonnet (redundancy judgment)",
     input: "Extracted angle list from step 01.",
-    output: "Semantic similarity scores between the proposed angles and all existing published articles. Claude-sonnet makes a final judgment: is this article meaningfully different enough from existing content to be worth publishing?",
-    prompt: "You are a content strategist evaluating whether a proposed article is worth publishing. Here are the angles the proposed article will cover: [angle list]. Here are the most semantically similar articles already published: [top matches from vector search]. Answer one question: would a reader who has already read the existing articles learn something new and valuable from this one — different competitor, different buyer stage, different use case, or meaningfully fresher data? Output: proceed (clear differentiation), modify (differentiation exists but brief needs sharpening — specify which angles to adjust), or return (no meaningful differentiation — specify which existing article covers this ground and recommend refreshing it instead).",
-    guardrail: "This is a probabilistic judgment, not a string match. \"Best Moveworks alternatives for AI-native IT automation\" and \"top Moveworks competitors for IT teams\" are the same angle. The vector search catches semantic overlap that exact matching cannot. If the judgment call is borderline (score 55-70), flag to Orchestrator with the specific overlapping angles identified rather than blocking outright.",
+    output: "Redundancy recommendation (proceed / modify / return) with written rationale. Top 3 most semantically similar published articles, pre-ranked by cosine similarity score, passed forward in the brief object for use in step 09. These are not just redundancy signals — they are the internal link candidates.",
+    prompt: "System: \"You are a content strategist evaluating whether a proposed article is worth publishing. Here are the angles the proposed article will cover: [angle list]. Here are the most semantically similar articles already published: [top matches from vector search]. Answer one question: would a reader who has already read the existing articles get meaningful new value from this one — different competitor, different buyer stage, different use case, or meaningfully fresher data? Output: proceed (clear differentiation), modify (differentiation exists but brief needs sharpening — specify which angles to adjust), or return (no meaningful differentiation — specify which existing article covers this ground and recommend refreshing it instead). Also output the top 3 most semantically similar articles ranked by similarity for use as internal link candidates in step 09.\"",
+    guardrail: "No fixed similarity threshold — the model reasons about differentiation, not raw similarity. All ITSM content is semantically close by nature; the question is whether the differentiation is meaningful enough for a reader, not whether the cosine score crosses a number. If the model cannot articulate a clear reason to proceed, it does not proceed. Top 3 similar articles are always passed forward regardless of the proceed/modify/return decision.",
   },
   research: {
     name: "03 · Competitor research", tool: "web_search + Anthropic API (summariser)",
@@ -106,11 +106,12 @@ const STEPS: Record<string, StepDetail> = {
     guardrail: "FAQPage schema is mandatory — article cannot proceed to step 09 without it. Missing or malformed FAQ section → return to step 05.",
   },
   package: {
-    name: "09 · Package + validate", tool: "Rule checks — no AI call",
-    input: "Draft + eval scorecard + JSON-LD schema + internal link suggestions + meta description.",
-    output: "Packaged submission: article body · schema block · scorecard summary · internal link map with anchor text (3–5 suggestions) · meta description · target prompts list.",
-    prompt: "No AI call. Five hard validation checks — all must pass.",
-    guardrail: "(1) CTA present above fold AND at end. (2) FAQPage JSON-LD attached. (3) Serval in first 200 words. (4) Eval score ≥75. (5) Minimum 2 internal link suggestions included. Any failed check → block submission, return specific error to step 05.",
+    name: "09 · Package + validate",
+    tool: "Rule checks (hard gates) + claude-sonnet (CTA recognition · meta description · internal link suggestions)",
+    input: "Draft + eval scorecard + JSON-LD schema block + top 3 semantically similar articles pre-ranked by vector similarity from step 02. No full library lookup needed — similarity work is already done.",
+    output: "Packaged submission: article body · schema block · scorecard summary · meta description (≤160 chars) · internal link map with anchor text (3–5 suggestions) · target prompts list.",
+    prompt: "Rule checks run first. No AI calls fire until all pass. Hard checks: (1) JSON-LD block present. (2) Eval score ≥75. (3) Serval appears in first 200 words. (4) At least 2 internal link slots available. Any failure → block and return specific error to step 05.\n\nIf all pass, claude-sonnet runs three tasks: System: \"You are packaging a finished article for human review. Do three things: (1) Confirm a CTA linking to the Serval demo page appears in the opening section AND at the end — recognize demo intent, not just an exact string match. (2) Write a meta description under 160 characters that mirrors the target query and mentions Serval by name. (3) Using the three pre-ranked similar articles provided from step 02, select the best anchor text and placement for each internal link based on where they fit naturally in the article.\"",
+    guardrail: "AI calls are blocked until all rule checks pass. CTA check is semantic — the model recognizes demo intent, not a specific string. Meta description must be under 160 characters and must not duplicate the H1. Internal link suggestions use the pre-ranked articles from step 02 — no additional similarity search is run at this step. Links must point to published, indexed articles only.",
   },
   human: {
     name: "10 · Human review gate", tool: "Slack notification · review interface",
@@ -287,7 +288,7 @@ export default function FirstAgentTab() {
             {N("eval",     450, 52, "amber",  "06", "Self-evaluation",              "claude-sonnet · 5 criteria · 0–100")}
             {N("decision", 528, 48, "amber",  "07", "Score ≥ 75 / 100?",            "pass or revision loop · max 2 attempts")}
             {N("schema",   602, 52, "purple", "08", "Attach FAQPage schema",        "JSON-LD generator · FAQPage type")}
-            {N("package",  680, 52, "gray",   "09", "Package + validate",           "5 hard checks before human gate")}
+            {N("package",  680, 52, "gray",   "09", "Package + validate",           "rule checks + claude-sonnet · meta, links, CTA")}
             {N("human",    758, 76, "coral",  "10", "Human review gate",            "draft · eval scorecard · schema",       undefined, "approve · revise · reject", WARN_C)}
             {N("dist",     886, 52, "green",  "11", "Distribution agent handoff",   "writes to Published DB + Performance DB", AMB)}
 
