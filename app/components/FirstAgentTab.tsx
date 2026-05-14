@@ -4,12 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 
 /* ── Inline icons for claude-sonnet and DB tokens in detail text ──────── */
-const ICON_RE = /(claude-sonnet|Published Content DB|Performance DB)/g;
+const ICON_RE = /(claude-sonnet|Published Content DB|Performance DB)/gi;
 
 function withIcons(text: string): React.ReactNode {
   const parts = text.split(ICON_RE);
   return parts.map((p, i) => {
-    if (p === "claude-sonnet") {
+    const lower = p.toLowerCase();
+    if (lower === "claude-sonnet") {
       return (
         <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 3, verticalAlign: "baseline" }}>
           {p}
@@ -17,7 +18,7 @@ function withIcons(text: string): React.ReactNode {
         </span>
       );
     }
-    if (p === "Published Content DB" || p === "Performance DB") {
+    if (lower === "published content db" || lower === "performance db") {
       return (
         <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 3, verticalAlign: "baseline" }}>
           {p}
@@ -39,18 +40,20 @@ interface StepDetail {
 
 const STEPS: Record<string, StepDetail> = {
   brief: {
-    name: "01 · Content brief received", tool: "Content orchestrator → JSON",
-    input: "Topic, target prompts (e.g. \"best Moveworks alternatives\"), competitor page URLs to beat, topic bucket, priority tier, available internal links from existing Serval content.",
-    output: "Parsed brief object. Rejected back to Orchestrator if target prompts, competitor pages, or topic bucket are missing.",
-    prompt: "No AI call at this step — pure data intake and validation.",
-    guardrail: "Must include: target prompts, competitor pages, topic bucket. Any missing field → reject brief and return error to Orchestrator immediately.",
+    name: "01 · Content brief received",
+    tool: "Content orchestrator → JSON + claude-sonnet (angle extraction)",
+    input: "Structured JSON brief: topic, target prompts, competitor page URLs, topic bucket, priority tier.",
+    output: "Parsed brief object + extracted angle list: the specific claims, framings, and buyer problems this article addresses. Angles are not a field in the brief — they are inferred by the AI from the target prompts and competitor pages.",
+    prompt: "System: \"You are a content strategist. Read this content brief and the competitor pages listed. Extract the core angles this article will take — the specific claims it makes, the buyer problem it addresses, and the framing it uses to position the solution. Output as a structured JSON list of angles.\" Input: full brief JSON + scraped competitor page summaries.",
+    guardrail: "Angle extraction must complete before step 02 runs. If fewer than 2 angles can be extracted, return brief to Orchestrator as underspecified.",
   },
   dbcheck: {
-    name: "02 · Published Content DB check", tool: "Published Content DB · read query",
-    input: "Topic and key angles extracted from brief.",
-    output: "Match result: angle already covered (Y/N) + list of existing articles on related ground for internal link suggestions.",
-    prompt: "No AI call. Structured read query against Published Content DB.",
-    guardrail: "Exact angle match → return brief to Orchestrator with duplicate flag. No further processing. Partial overlap → continue, log existing articles for internal link map.",
+    name: "02 · Published Content DB check",
+    tool: "Vector similarity search + claude-sonnet (redundancy judgment)",
+    input: "Extracted angle list from step 01.",
+    output: "Semantic similarity scores between the proposed angles and all existing published articles. Claude-sonnet makes a final judgment: is this article meaningfully different enough from existing content to be worth publishing?",
+    prompt: "System: \"You are evaluating whether a proposed article is redundant given our existing content library. Here are the angles the proposed article will cover: [angle list]. Here are the most semantically similar articles already published, with their angles: [top matches from vector search]. Make a judgment: are these angles similar enough that publishing this article would be redundant? Return a confidence score 0-100 and a recommendation: proceed, modify, or return to Orchestrator.\" Threshold: confidence above 70 = redundant, return to Orchestrator.",
+    guardrail: "This is a probabilistic judgment, not a string match. \"Best Moveworks alternatives for AI-native IT automation\" and \"top Moveworks competitors for IT teams\" are the same angle. The vector search catches semantic overlap that exact matching cannot. If the judgment call is borderline (score 55-70), flag to Orchestrator with the specific overlapping angles identified rather than blocking outright.",
   },
   research: {
     name: "03 · Competitor research", tool: "web_search + Anthropic API (summariser)",
@@ -277,7 +280,7 @@ export default function FirstAgentTab() {
 
             {/* Workflow nodes */}
             {N("brief",    48, 52, "blue",   "01", "Content brief received",       "from Content orchestrator · JSON")}
-            {N("dbcheck",  126, 52, "teal",   "02", "Published Content DB check",   "reads Published DB · angle exists?",    AMB)}
+            {N("dbcheck",  126, 52, "teal",   "02", "Published Content DB check",   "vector search · semantic redundancy check",    AMB)}
             {N("research", 204, 52, "teal",   "03", "Competitor research",          "web_search · top 3 competitor pages")}
             {N("outline",  282, 52, "purple", "04", "Generate outline",             "claude-sonnet · comparison template")}
             {N("draft",    360, 64, "purple", "05", "Write full draft",             "claude-sonnet · voice guide in prompt", undefined, "1,500–2,500 words · comparison format")}
@@ -308,7 +311,7 @@ export default function FirstAgentTab() {
           ) : (
             <div>
               <div style={{ marginBottom: 14 }}>
-                <p style={{ color: "#fafafa", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{detail.name}</p>
+                <p style={{ color: "#fafafa", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{withIcons(detail.name)}</p>
                 <p style={{ color: "#52525b", fontSize: 12 }}>{withIcons(detail.tool)}</p>
               </div>
               <div style={{ borderTop: "1px solid #1f1f23", marginBottom: 14 }}/>
