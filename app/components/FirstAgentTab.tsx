@@ -167,34 +167,43 @@ export default function FirstAgentTab() {
         The First Agent
       </h2>
 
-      {/* ── Why section ──────────────────────────────────────────────── */}
-      <div style={{ marginBottom: 32, maxWidth: 720 }}>
-        <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
-          Why the Blog / Market Insights agent?
-        </p>
-        <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.78, marginBottom: 28 }}>
-          The &ldquo;Best Moveworks Alternatives&rdquo; article published March 15 caused the single largest visibility spike in the dataset — Google AI Overviews jumped from 3.5% to 7% the next day. The Blog agent is the engine that replicates that result systematically across every comparison query where Serval isn&apos;t showing up.
-        </p>
+      {/* ── Why + Metrics — side-by-side columns ─────────────────────── */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, marginBottom: 36 }}>
+        <div>
+          <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
+            Why the Blog / Market Insights agent?
+          </p>
+          <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.78 }}>
+            The &ldquo;Best Moveworks Alternatives&rdquo; article published March 15 caused the single largest visibility spike in the dataset — Google AI Overviews jumped from 3.5% to 7% the next day. The Blog agent is the engine that replicates that result systematically across every comparison query where Serval isn&apos;t showing up.
+          </p>
+        </div>
 
-        <p style={{ color: "#71717a", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
-          The metrics it moves
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {[
-            { label: "Primary",   color: "#a78bfa", value: "AEO visibility score on Competitor Targets topic — currently 11.8%, average position 5.51. Every comparison article published should move this." },
-            { label: "Secondary", color: "#22d3ee", value: "ProFound citation rank on specific target prompts (e.g. \"best Moveworks alternatives\" from rank 34 toward rank 1–5)." },
-            { label: "Tertiary",  color: "#34d399", value: "Demo request source attribution showing \"AI search\" or \"Perplexity\" as the referral." },
-          ].map(({ label, color, value }) => (
-            <div key={label}>
-              <p style={{ color, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{label}</p>
-              <p style={{ color: "#a1a1aa", fontSize: 14.5, lineHeight: 1.7 }}>{value}</p>
-            </div>
-          ))}
+        <div>
+          <p style={{ color: "#71717a", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
+            The metrics it moves
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {[
+              { label: "Primary",   color: "#a78bfa", value: "AEO visibility score on Competitor Targets topic — currently 11.8%, average position 5.51. Every comparison article published should move this." },
+              { label: "Secondary", color: "#22d3ee", value: "ProFound citation rank on specific target prompts (e.g. \"best Moveworks alternatives\" from rank 34 toward rank 1–5)." },
+              { label: "Tertiary",  color: "#34d399", value: "Demo request source attribution showing \"AI search\" or \"Perplexity\" as the referral." },
+            ].map(({ label, color, value }) => (
+              <div key={label}>
+                <p style={{ color, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{label}</p>
+                <p style={{ color: "#a1a1aa", fontSize: 14.5, lineHeight: 1.7 }}>{value}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
+      {/* ── Section title ─────────────────────────────────────────────── */}
+      <h3 style={{ color: "#fafafa", fontSize: 20, fontWeight: 700, letterSpacing: "-0.015em", marginBottom: 16 }}>
+        The Agent Diagram
+      </h3>
+
       {/* ── Diagram + panel ──────────────────────────────────────────── */}
-      <div style={{ display: "grid", gridTemplateColumns: "420px 1fr", gap: 16, alignItems: "start" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 16, alignItems: "start" }}>
 
         {/* SVG column */}
         <div style={{ background: "#0c0c0f", border: "1px solid #1f1f23", borderRadius: 14, padding: "10px 4px 16px" }}>
