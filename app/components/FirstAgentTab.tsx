@@ -295,6 +295,7 @@ export default function FirstAgentTab() {
                 fill="#d4d4d8" fontSize={11} fontWeight="600" style={{ fontFamily: "DM Sans, sans-serif" }}>Archive</text>
               <text x={338} y={764} textAnchor="middle" dominantBaseline="central"
                 fill={SUB} fontSize={10} style={{ fontFamily: "DM Sans, sans-serif" }}>with reason</text>
+              <image href="/db-orange.png" x={363} y={735} width={11} height={11} />
             </g>
 
             {/* Workflow nodes */}
