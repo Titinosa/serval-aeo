@@ -286,9 +286,6 @@ export default function FirstAgentTab() {
             {N("human",    758, 76, "coral",  "10", "Human review gate",            "draft · eval scorecard · schema",       undefined, "approve · revise · reject", WARN_C)}
             {N("dist",     886, 52, "green",  "11", "Distribution agent handoff",   "writes to Published DB + Performance DB", AMB)}
 
-            {/* Metrics footer */}
-            <text x="160" y="952" textAnchor="middle" fill={DIM} fontSize={10} style={{ fontFamily: "DM Sans, sans-serif" }}>Primary: Competitor Targets visibility · 11.8% → top 5 cited</text>
-            <text x="160" y="965" textAnchor="middle" fill={DIM} fontSize={9.5} style={{ fontFamily: "DM Sans, sans-serif" }}>Secondary: ProFound citation rank per prompt · Tertiary: demo source attribution</text>
           </svg>
         </div>
 
