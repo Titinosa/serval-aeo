@@ -164,8 +164,18 @@ export default function FirstAgentTab() {
   return (
     <div>
       <h2 className="title-glow" style={{ fontSize: "clamp(1.6rem,3vw,2.25rem)", fontWeight: 800, letterSpacing: "-0.025em", marginBottom: 20, lineHeight: 1.1 }}>
-        The First Agent
+        The First Agent: Blog Agent
       </h2>
+
+      {/* ── Why block — above diagram ────────────────────────────────── */}
+      <div style={{ marginBottom: 28, maxWidth: 760 }}>
+        <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
+          Why the Blog / Market Insights agent?
+        </p>
+        <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.78 }}>
+          The &ldquo;Best Moveworks Alternatives&rdquo; article published March 15 caused the single largest visibility spike in the dataset — Google AI Overviews jumped from 3.5% to 7% the next day. The Blog agent is the engine that replicates that result systematically across every comparison query where Serval isn&apos;t showing up.
+        </p>
+      </div>
 
       {/* ── Diagram + panel ──────────────────────────────────────────── */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 16, alignItems: "start" }}>
@@ -325,15 +335,8 @@ export default function FirstAgentTab() {
 
       </div>
 
-      {/* ── Why + Metrics — stacked, below diagram ─────────────────────── */}
+      {/* ── Metrics — below diagram ─────────────────────────────────── */}
       <div style={{ marginTop: 48, maxWidth: 760 }}>
-        <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
-          Why the Blog / Market Insights agent?
-        </p>
-        <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.78, marginBottom: 32 }}>
-          The &ldquo;Best Moveworks Alternatives&rdquo; article published March 15 caused the single largest visibility spike in the dataset — Google AI Overviews jumped from 3.5% to 7% the next day. The Blog agent is the engine that replicates that result systematically across every comparison query where Serval isn&apos;t showing up.
-        </p>
-
         <p style={{ color: "#71717a", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
           The metrics it moves
         </p>
