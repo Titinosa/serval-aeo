@@ -451,16 +451,63 @@ function NotesView() {
         </div>
       </div>
 
-      {/* Distribution plan — blank */}
+      {/* Distribution plan */}
       <div>
-        <p style={{ color: "#f87171", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>
+        <p style={{ color: "#f87171", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 16 }}>
           Distribution plan
         </p>
-        <p style={{ color: "#52525b", fontSize: 13.5, fontStyle: "italic" }}>
-          To be drafted.
-        </p>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <Phase title="Day of publish">
+            <Bullets items={[
+              "Submit URL to Google Search Console",
+              "Sitemap ping (automated)",
+            ]} />
+          </Phase>
+
+          <Phase title="Week 1">
+            <Bullets items={[
+              "Add “best ServiceNow alternatives” and “ServiceNow alternatives for IT teams” as tracked prompts in ProFound",
+              "LinkedIn post: “why teams are leaving ServiceNow” angle with link",
+            ]} />
+          </Phase>
+
+          <Phase title="Weeks 2–4 — Roundup outreach">
+            <p style={{ color: "#a1a1aa", fontSize: 14.5, lineHeight: 1.7 }}>
+              The five highest-cited &ldquo;best ITSM tools&rdquo; roundup pages in our dataset don&apos;t mention Serval. Getting named on any of them would add more citation share than all of Serval&apos;s owned content combined. Techradar is the priority — earned media, takes reader tips, updates its roundups. Also reach out to <code style={{ color: "#c4b5fd", background: "rgba(124,58,237,0.08)", padding: "1px 5px", borderRadius: 4, fontSize: 12.5 }}>unthread.io/blog/servicenow-alternatives-internal-support-teams</code>, which already mentions Serval and could be strengthened.
+            </p>
+          </Phase>
+
+          <Phase title="Month 1 — Review sites">
+            <Bullets items={[
+              "Ask 2–3 customers who migrated from ServiceNow to post on Gartner Peer Insights and G2, mentioning the migration",
+            ]} />
+          </Phase>
+
+          <Phase title="Reddit — Phase 2 only">
+            <Bullets items={[
+              "Monitor r/sysadmin and r/ITManagers now. No responses until 60 days of passive presence.",
+            ]} />
+          </Phase>
+
+          <Phase title="What to watch">
+            <Bullets items={[
+              "72 hours: Google AI Overviews picks up the article",
+              "4 weeks: Serval appears in top 10 on “ServiceNow alternatives” prompts in ProFound",
+            ]} />
+          </Phase>
+        </div>
       </div>
 
+    </div>
+  );
+}
+
+function Phase({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div>
+      <p style={{ color: "#fafafa", fontWeight: 700, fontSize: 13.5, marginBottom: 8 }}>{title}</p>
+      {children}
     </div>
   );
 }
