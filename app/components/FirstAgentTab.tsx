@@ -168,22 +168,26 @@ export default function FirstAgentTab() {
       </h2>
 
       {/* ── Why section ──────────────────────────────────────────────── */}
-      <div style={{ background: "rgba(124,58,237,0.05)", border: "1px solid rgba(124,58,237,0.18)", borderRadius: 14, padding: "24px 28px", marginBottom: 28, maxWidth: 780 }}>
-        <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>
+      <div style={{ marginBottom: 32, maxWidth: 720 }}>
+        <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
           Why the Blog / Market Insights agent?
         </p>
-        <p style={{ color: "#d4d4d8", fontSize: 14.5, lineHeight: 1.78, marginBottom: 22 }}>
+        <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.78, marginBottom: 28 }}>
           The &ldquo;Best Moveworks Alternatives&rdquo; article published March 15 caused the single largest visibility spike in the dataset — Google AI Overviews jumped from 3.5% to 7% the next day. The Blog agent is the engine that replicates that result systematically across every comparison query where Serval isn&apos;t showing up.
         </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, paddingTop: 18, borderTop: "1px solid rgba(124,58,237,0.12)" }}>
+
+        <p style={{ color: "#71717a", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
+          The metrics it moves
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {[
             { label: "Primary",   color: "#a78bfa", value: "AEO visibility score on Competitor Targets topic — currently 11.8%, average position 5.51. Every comparison article published should move this." },
             { label: "Secondary", color: "#22d3ee", value: "ProFound citation rank on specific target prompts (e.g. \"best Moveworks alternatives\" from rank 34 toward rank 1–5)." },
             { label: "Tertiary",  color: "#34d399", value: "Demo request source attribution showing \"AI search\" or \"Perplexity\" as the referral." },
           ].map(({ label, color, value }) => (
-            <div key={label} style={{ display: "grid", gridTemplateColumns: "84px 1fr", gap: "0 12px", alignItems: "baseline" }}>
-              <span style={{ color, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</span>
-              <span style={{ color: "#a1a1aa", fontSize: 13.5, lineHeight: 1.65 }}>{value}</span>
+            <div key={label}>
+              <p style={{ color, fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{label}</p>
+              <p style={{ color: "#a1a1aa", fontSize: 14.5, lineHeight: 1.7 }}>{value}</p>
             </div>
           ))}
         </div>
