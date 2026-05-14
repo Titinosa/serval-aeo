@@ -111,7 +111,7 @@ export default function Home() {
                   letterSpacing: "0.03em",
                 }}
               >
-                Isa Deliai
+                Isa D&apos;Elia
               </span>
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function Home() {
           }}
         >
           <p style={{ color: "var(--text-muted)", fontSize: 12, letterSpacing: "0.05em" }}>
-            Prepared for Serval · Agentic Operator Role · Isa Deliai
+            Prepared for Serval · Agentic Operator Role · Isa D&apos;Elia
           </p>
         </footer>
       </div>

@@ -9,7 +9,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Serval AEO Assignment — Isa Deliai",
+  title: "Serval AEO Assignment — Isa D'Elia",
   description: "Agentic Operator assignment: AEO visibility analysis, agent design, and content strategy for Serval.",
 };
 
