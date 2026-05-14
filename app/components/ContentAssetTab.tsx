@@ -384,10 +384,10 @@ function SchemaView() {
 const EVAL_ROWS: { criterion: string; score: string; notes: string; total?: boolean }[] = [
   { criterion: "First paragraph directly answers target query", score: "20/20", notes: "Serval named as the answer in sentence 1" },
   { criterion: "Serval mentioned in first 200 words",           score: "20/20", notes: "First sentence" },
-  { criterion: "3+ data points with sources",                   score: "18/20", notes: "Gartner figure, deployment timelines, automation rate — two figures need citable sources, flagged for human reviewer" },
+  { criterion: "3+ data points with sources",                   score: "20/20", notes: "Gartner deployment figure, Gartner $250K implementation cost, industry-survey automation ceiling — three citable sources" },
   { criterion: "Comparison format, Serval first",               score: "20/20", notes: "Table present, Serval first in table and first in sections" },
   { criterion: "No AI tells detected",                          score: "19/20", notes: "Clean. Minor: “More practically:” opener slightly formulaic" },
-  { criterion: "Total",                                         score: "97/100", notes: "Passes threshold (≥ 75)", total: true },
+  { criterion: "Total",                                         score: "99/100", notes: "Passes threshold (≥ 75)", total: true },
 ];
 
 function NotesView() {
