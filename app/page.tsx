@@ -7,6 +7,7 @@ import StrategyTab from "./components/StrategyTab";
 import SixMonthsTab from "./components/SixMonthsTab";
 import AgentSystemTab from "./components/AgentSystemTab";
 import FirstAgentTab from "./components/FirstAgentTab";
+import ContentAssetTab from "./components/ContentAssetTab";
 
 const TABS = [
   { id: "analysis",      label: "Analysis & Key Insights" },
@@ -259,56 +260,3 @@ export default function Home() {
   );
 }
 
-/* ─── Placeholder for tabs with no content yet ────────────────────────────── */
-
-function ComingSoon({ title, description }: { title: string; description: string }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: 80,
-        paddingBottom: 80,
-        textAlign: "center",
-      }}
-    >
-      <div
-        style={{
-          width: 60,
-          height: 60,
-          borderRadius: 16,
-          background: "rgba(124,58,237,0.1)",
-          border: "1px solid rgba(124,58,237,0.2)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 24,
-          fontSize: 24,
-        }}
-      >
-        ✦
-      </div>
-      <h2
-        className="title-glow"
-        style={{ fontSize: "1.6rem", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 14 }}
-      >
-        {title}
-      </h2>
-      <p style={{ color: "var(--text-secondary)", maxWidth: 400, lineHeight: 1.75, fontSize: 15.5 }}>
-        {description}
-      </p>
-    </div>
-  );
-}
-
-
-function ContentAssetTab() {
-  return (
-    <ComingSoon
-      title="AEO Content Asset"
-      description="A finished content piece engineered to win LLM citations on an under-performing topic, with schema and distribution plan."
-    />
-  );
-}
