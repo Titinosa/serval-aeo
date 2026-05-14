@@ -52,12 +52,9 @@ export default function ContentAssetTab() {
 
   return (
     <div>
-      <h2 className="title-glow" style={{ fontSize: "clamp(1.6rem,3vw,2.25rem)", fontWeight: 800, letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.1 }}>
+      <h2 className="title-glow" style={{ fontSize: "clamp(1.6rem,3vw,2.25rem)", fontWeight: 800, letterSpacing: "-0.025em", marginBottom: 28, lineHeight: 1.1 }}>
         AEO Content Asset
       </h2>
-      <p style={{ color: "#a1a1aa", fontSize: 15, lineHeight: 1.7, marginBottom: 28, maxWidth: 720 }}>
-        A finished comparison article targeting <em style={{ color: "#d4d4d8" }}>&ldquo;best ServiceNow alternatives&rdquo;</em> — the under-performing topic from the audit. Includes the published article, its FAQPage JSON-LD schema, and the distribution plan.
-      </p>
 
       {/* Subtab nav */}
       <div style={{ borderBottom: "1px solid #1f1f23", marginBottom: 32, display: "flex", gap: 4, overflowX: "auto" }}>
