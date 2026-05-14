@@ -6,6 +6,7 @@ import AnalysisTab from "./components/AnalysisTab";
 import StrategyTab from "./components/StrategyTab";
 import SixMonthsTab from "./components/SixMonthsTab";
 import AgentSystemTab from "./components/AgentSystemTab";
+import FirstAgentTab from "./components/FirstAgentTab";
 
 const TABS = [
   { id: "analysis",      label: "Analysis & Key Insights" },
@@ -302,14 +303,6 @@ function ComingSoon({ title, description }: { title: string; description: string
   );
 }
 
-function FirstAgentTab() {
-  return (
-    <ComingSoon
-      title="The First Agent"
-      description="Full spec: workflow, inputs/outputs, tools and APIs, eval criteria, guardrails, and the single metric it moves."
-    />
-  );
-}
 
 function ContentAssetTab() {
   return (
