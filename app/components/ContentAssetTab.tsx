@@ -372,99 +372,88 @@ function SchemaView() {
 }
 
 /* ── Notes view ────────────────────────────────────────────────────────── */
+const EVAL_ROWS: { criterion: string; score: string; notes: string; total?: boolean }[] = [
+  { criterion: "First paragraph directly answers target query", score: "20/20", notes: "Serval named as the answer in sentence 1" },
+  { criterion: "Serval mentioned in first 200 words",           score: "20/20", notes: "First sentence" },
+  { criterion: "3+ data points with sources",                   score: "18/20", notes: "Gartner figure, deployment timelines, automation rate — two figures need citable sources, flagged for human reviewer" },
+  { criterion: "Comparison format, Serval first",               score: "20/20", notes: "Table present, Serval first in table and first in sections" },
+  { criterion: "No AI tells detected",                          score: "19/20", notes: "Clean. Minor: “More practically:” opener slightly formulaic" },
+  { criterion: "Total",                                         score: "97/100", notes: "Passes threshold (≥ 75)", total: true },
+];
+
 function NotesView() {
   return (
-    <div style={{ maxWidth: 840, margin: "0 auto", display: "flex", flexDirection: "column", gap: 28 }}>
+    <div style={{ maxWidth: 880, margin: "0 auto", display: "flex", flexDirection: "column", gap: 36 }}>
 
-      <Section
-        kicker="Target prompts"
-        kickerColor="#a78bfa"
-        body="The article is engineered to win citations on these specific LLM queries — pulled from the audit as Serval&apos;s weakest comparison-intent territory."
-      >
+      {/* Topic selection rationale */}
+      <div>
+        <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
+          Topic selection rationale
+        </p>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+          <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.75 }}>
+            <span style={{ color: "#fafafa", fontWeight: 600 }}>Topic bucket:</span> Competitor Targets
+          </p>
+          <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.75 }}>
+            <span style={{ color: "#fafafa", fontWeight: 600 }}>Target prompt:</span> &ldquo;best ServiceNow alternatives for IT teams&rdquo;
+          </p>
+        </div>
+
+        <p style={{ color: "#fafafa", fontWeight: 600, fontSize: 14, marginBottom: 8 }}>Why this topic</p>
+        <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.75, marginBottom: 24 }}>
+          The only topic in the dataset with real external search volume (17,025/mo). Serval is rank 22 with average position 5.51 — appearing in LLM responses but buried. ServiceNow alternatives is the highest purchase-intent query in ITSM: buyers using this phrase have already decided to leave and are actively comparing. Serval has published Moveworks, Freshservice, Jira SM, Atomicwork, and Risotto alternatives articles — but not ServiceNow, the biggest one.
+        </p>
+
+        <p style={{ color: "#fafafa", fontWeight: 600, fontSize: 14, marginBottom: 10 }}>What makes this article engineered to win citations</p>
         <Bullets items={[
-          "“best ServiceNow alternatives”",
-          "“ServiceNow alternatives for AI-native IT teams”",
-          "“Serval vs ServiceNow”",
-          "“how to replace ServiceNow”",
-          "“ServiceNow alternatives 2026”",
+          "Opens with a direct, declarative answer to the target query in the first sentence (the format LLMs cite)",
+          "Mentions Serval by name in sentence 1 — visibility without brand mention doesn’t convert",
+          "Comparison table is above the fold — mirrors how the top cited pages in our dataset are structured",
+          "Serval is featured first, most prominently, and with the most detail",
+          "FAQ section at the bottom generates FAQPage JSON-LD schema — Eesel.ai uses this on 100% of their posts and is the #5 most cited domain",
+          "Written in plain language targeting a 9th grade reading level — easier for LLMs to retrieve and paraphrase",
         ]} />
-      </Section>
+      </div>
 
-      <Section
-        kicker="Why this topic"
-        kickerColor="#22d3ee"
-        body="ServiceNow is the dominant comparison query in ITSM and Serval&apos;s current AEO visibility on it is near zero. From the audit: ProFound rank 30+ on the primary prompt, no AI Overview citation, no Perplexity citation. Mirrors the structure of the “Best Moveworks Alternatives” piece that drove the March 15 visibility spike — same playbook, larger TAM."
-      />
+      {/* Self-evaluation score */}
+      <div>
+        <p style={{ color: "#fbbf24", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 14 }}>
+          Self-evaluation score
+        </p>
 
-      <Section
-        kicker="On-page AEO checks"
-        kickerColor="#34d399"
-        body="Hard requirements verified before publish — same five-gate validation the Blog agent enforces in step 09."
-      >
-        <Bullets items={[
-          "Direct answer to “best ServiceNow alternatives” in the first sentence ✓",
-          "Serval mentioned by name in the first 200 words ✓",
-          "Comparison table with Serval positioned first, never last ✓",
-          "CTA above the fold and at the end ✓",
-          "FAQPage JSON-LD schema attached, 6/6 valid ✓",
-          "Word count: ~1,650 ✓",
-          "No em dashes used as sentence breaks · no “leverage / delve / comprehensive / tapestry” ✓",
-        ]} />
-      </Section>
+        <div style={{ overflowX: "auto", border: "1px solid #1f1f23", borderRadius: 10 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13.5, fontFamily: "DM Sans, sans-serif" }}>
+            <thead>
+              <tr style={{ borderBottom: "1px solid #2d2d32", background: "#0a0a0c" }}>
+                <th style={{ textAlign: "left", padding: "10px 14px", color: "#a1a1aa", fontWeight: 700, fontSize: 11.5, textTransform: "uppercase", letterSpacing: "0.05em" }}>Criterion</th>
+                <th style={{ textAlign: "left", padding: "10px 14px", color: "#a1a1aa", fontWeight: 700, fontSize: 11.5, textTransform: "uppercase", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>Score</th>
+                <th style={{ textAlign: "left", padding: "10px 14px", color: "#a1a1aa", fontWeight: 700, fontSize: 11.5, textTransform: "uppercase", letterSpacing: "0.05em" }}>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {EVAL_ROWS.map((r, i) => (
+                <tr key={i} style={{ borderBottom: i < EVAL_ROWS.length - 1 ? "1px solid #1f1f23" : "none", background: r.total ? "rgba(251,191,36,0.06)" : "transparent" }}>
+                  <td style={{ padding: "12px 14px", color: r.total ? "#fafafa" : "#d4d4d8", fontWeight: r.total ? 700 : 500, verticalAlign: "top" }}>{r.criterion}</td>
+                  <td style={{ padding: "12px 14px", color: r.total ? "#fbbf24" : "#34d399", fontWeight: 700, whiteSpace: "nowrap", verticalAlign: "top" }}>{r.score}</td>
+                  <td style={{ padding: "12px 14px", color: r.total ? "#fbbf24" : "#a1a1aa", fontWeight: r.total ? 600 : 400, verticalAlign: "top", lineHeight: 1.6 }}>{r.notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-      <Section
-        kicker="Internal link map"
-        kickerColor="#fbbf24"
-        body="Three anchor-text suggestions pointing to existing Serval content, surfaced from the Published Content DB."
-      >
-        <Bullets items={[
-          "“Serval pricing” → /pricing  (from the pricing-comparison FAQ)",
-          "“SOC 2 Type II” → /security  (from the compliance FAQ)",
-          "“workflow automation” → /platform/workflows  (from the Serval section)",
-        ]} />
-      </Section>
+      {/* Distribution plan — blank */}
+      <div>
+        <p style={{ color: "#f87171", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>
+          Distribution plan
+        </p>
+        <p style={{ color: "#52525b", fontSize: 13.5, fontStyle: "italic" }}>
+          To be drafted.
+        </p>
+      </div>
 
-      <Section
-        kicker="Distribution plan"
-        kickerColor="#f87171"
-        body="Eleven-step handoff to the Distribution agent the moment human approval lands."
-      >
-        <Bullets items={[
-          "Publish to /serval-faqs/best-servicenow-alternatives on Framer",
-          "Submit URL to Google Search Console + sitemap update",
-          "Write baseline entry to Performance DB — AEO visibility tracking begins from publish date",
-          "Team Slack notification with target prompts to monitor",
-          "LinkedIn post draft generated · requires separate human approval before scheduling",
-          "HubSpot lead source tag set to “AI search” on any inbound from this URL",
-        ]} />
-      </Section>
-
-      <Section
-        kicker="Success criteria · 30 days post-publish"
-        kickerColor="#a78bfa"
-        body="What the Performance agent watches for. Failure on all three after 60 days → topic returned to Intelligence agent for strategy review."
-      >
-        <Bullets items={[
-          "Primary — ProFound citation rank on “best ServiceNow alternatives” moves from 30+ into the top 10",
-          "Secondary — at least one AI Overview citation or Perplexity citation captured",
-          "Tertiary — one inbound demo request attributed to AI search / Perplexity referrer",
-        ]} />
-      </Section>
-
-    </div>
-  );
-}
-
-function Section({ kicker, kickerColor, body, children }: { kicker: string; kickerColor: string; body: string; children?: React.ReactNode }) {
-  return (
-    <div>
-      <p style={{ color: kickerColor, fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
-        {kicker}
-      </p>
-      <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.75, marginBottom: children ? 12 : 0 }}>
-        {body}
-      </p>
-      {children}
     </div>
   );
 }
