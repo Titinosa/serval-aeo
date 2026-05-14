@@ -5,6 +5,7 @@ import Image from "next/image";
 import AnalysisTab from "./components/AnalysisTab";
 import StrategyTab from "./components/StrategyTab";
 import SixMonthsTab from "./components/SixMonthsTab";
+import AgentSystemTab from "./components/AgentSystemTab";
 
 const TABS = [
   { id: "analysis",      label: "Analysis & Key Insights" },
@@ -298,15 +299,6 @@ function ComingSoon({ title, description }: { title: string; description: string
         {description}
       </p>
     </div>
-  );
-}
-
-function AgentSystemTab() {
-  return (
-    <ComingSoon
-      title="Agent-Powered Content System"
-      description="The full agent architecture that closes the visibility gaps — who owns what, how they hand off, and how the system compounds over time."
-    />
   );
 }
 
