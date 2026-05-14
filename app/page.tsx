@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import AnalysisTab from "./components/AnalysisTab";
+import StrategyTab from "./components/StrategyTab";
+import SixMonthsTab from "./components/SixMonthsTab";
 
 const TABS = [
   { id: "analysis",      label: "Analysis & Key Insights" },
@@ -254,7 +257,7 @@ export default function Home() {
   );
 }
 
-/* ─── Placeholder Tab Components ─────────────────────────────────────────── */
+/* ─── Placeholder for tabs with no content yet ────────────────────────────── */
 
 function ComingSoon({ title, description }: { title: string; description: string }) {
   return (
@@ -287,54 +290,14 @@ function ComingSoon({ title, description }: { title: string; description: string
       </div>
       <h2
         className="title-glow"
-        style={{
-          fontSize: "1.6rem",
-          fontWeight: 700,
-          letterSpacing: "-0.02em",
-          marginBottom: 14,
-        }}
+        style={{ fontSize: "1.6rem", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: 14 }}
       >
         {title}
       </h2>
-      <p
-        style={{
-          color: "var(--text-secondary)",
-          maxWidth: 400,
-          lineHeight: 1.75,
-          fontSize: 15.5,
-          letterSpacing: "0.01em",
-        }}
-      >
+      <p style={{ color: "var(--text-secondary)", maxWidth: 400, lineHeight: 1.75, fontSize: 15.5 }}>
         {description}
       </p>
     </div>
-  );
-}
-
-function AnalysisTab() {
-  return (
-    <ComingSoon
-      title="Analysis & Key Insights"
-      description="Trends, patterns, and the story Serval's AEO data tells about its current position across topics, platforms, and competitors."
-    />
-  );
-}
-
-function StrategyTab() {
-  return (
-    <ComingSoon
-      title="Focus & Strategy Recommendations"
-      description="A ranked priority list for closing the AEO gap — where to invest time first and why."
-    />
-  );
-}
-
-function SixMonthsTab() {
-  return (
-    <ComingSoon
-      title="6 Months Later…"
-      description="How to know if >50% AEO visibility is actually working for the business, and what signals reveal whether it's real growth or noise."
-    />
   );
 }
 
