@@ -139,6 +139,9 @@ const ART = {
 function ArticleView() {
   return (
     <article style={{ maxWidth: 760, margin: "0 auto", background: "#0c0c0f", border: "1px solid #1f1f23", borderRadius: 14, padding: "48px 56px" }}>
+      <p style={{ color: "#71717a", fontSize: 12.5, fontWeight: 500, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 12 }}>
+        May 14, 2026
+      </p>
       <h1 style={{ color: "#fafafa", fontSize: "clamp(1.6rem,2.6vw,2rem)", fontWeight: 800, lineHeight: 1.18, letterSpacing: "-0.02em", marginBottom: 22 }}>
         Best ServiceNow Alternatives for AI-Native IT Teams (2026)
       </h1>
