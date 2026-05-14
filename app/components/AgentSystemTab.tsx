@@ -95,7 +95,7 @@ export default function AgentSystemTab() {
         Agent-Powered Content System
       </h2>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 230px", gap: 24, alignItems: "start" }}>
+      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 230px", gap: 24, alignItems: "start" }}>
 
         {/* ── SVG column ────────────────────────────────────────────────── */}
         <div style={{ background: "#0c0c0f", border: "1px solid #1f1f23", borderRadius: 14, padding: "10px 4px 12px", overflowX: "auto" }}>
@@ -229,7 +229,7 @@ export default function AgentSystemTab() {
         </div>
 
         {/* ── Detail panel (right side) ──────────────────────────────────── */}
-        <div style={{
+        <div className="responsive-stickyoff" style={{
           background: "#111113",
           border: "1px solid #1f1f23",
           borderRadius: 12,

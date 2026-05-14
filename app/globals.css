@@ -79,3 +79,37 @@ body {
 .fade-in {
   animation: tabFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ── Mobile responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* tighten container paddings */
+  .responsive-hero    { padding: 56px 18px 40px !important; }
+  .responsive-main    { padding: 36px 18px 60px !important; }
+  .responsive-header  { padding: 0 18px !important; }
+  .responsive-tabnav  { padding: 0 18px !important; }
+
+  /* stack diagram grids (diagram + detail panel) on phones */
+  .responsive-grid { grid-template-columns: 1fr !important; }
+
+  /* don't pin detail panels on mobile — let them sit naturally below the diagram */
+  .responsive-stickyoff {
+    position: static !important;
+    top: auto !important;
+  }
+
+  /* article body padding */
+  .responsive-article { padding: 28px 20px !important; }
+
+  /* two-up columns collapse to one */
+  .responsive-2col { grid-template-columns: 1fr !important; gap: 28px !important; }
+
+  /* table-heavy regions remain horizontal-scrollable (already set via overflowX:auto) */
+}
+
+@media (max-width: 480px) {
+  .responsive-hero    { padding: 44px 14px 32px !important; }
+  .responsive-main    { padding: 28px 14px 48px !important; }
+  .responsive-header  { padding: 0 14px !important; }
+  .responsive-tabnav  { padding: 0 14px !important; }
+  .responsive-article { padding: 22px 16px !important; }
+}

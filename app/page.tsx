@@ -69,6 +69,7 @@ export default function Home() {
           }}
         >
           <div
+            className="responsive-header"
             style={{
               maxWidth: 1100,
               margin: "0 auto",
@@ -119,6 +120,7 @@ export default function Home() {
 
         {/* ── Hero ─────────────────────────────────────────────── */}
         <div
+          className="responsive-hero"
           style={{
             maxWidth: 1100,
             margin: "0 auto",
@@ -176,6 +178,7 @@ export default function Home() {
           }}
         >
           <nav
+            className="responsive-tabnav"
             style={{
               maxWidth: 1100,
               margin: "0 auto",
@@ -227,6 +230,7 @@ export default function Home() {
 
         {/* ── Tab Content ──────────────────────────────────────── */}
         <main
+          className="responsive-main"
           style={{
             maxWidth: 1100,
             margin: "0 auto",

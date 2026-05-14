@@ -138,7 +138,7 @@ const ART = {
 
 function ArticleView() {
   return (
-    <article style={{ maxWidth: 760, margin: "0 auto", background: "#0c0c0f", border: "1px solid #1f1f23", borderRadius: 14, padding: "48px 56px" }}>
+    <article className="responsive-article" style={{ maxWidth: 760, margin: "0 auto", background: "#0c0c0f", border: "1px solid #1f1f23", borderRadius: 14, padding: "48px 56px" }}>
       <p style={{ color: "#71717a", fontSize: 12.5, fontWeight: 500, letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 12 }}>
         May 14, 2026
       </p>

@@ -227,7 +227,7 @@ export default function FirstAgentTab() {
       </div>
 
       {/* ── Diagram + panel ──────────────────────────────────────────── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 16, alignItems: "start" }}>
+      <div className="responsive-grid" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 16, alignItems: "start" }}>
 
         {/* SVG column */}
         <div style={{ background: "#0c0c0f", border: "1px solid #1f1f23", borderRadius: 14, padding: "10px 4px 16px" }}>
@@ -324,7 +324,7 @@ export default function FirstAgentTab() {
         </div>
 
         {/* ── Detail panel ─────────────────────────────────────────────── */}
-        <div style={{ background: "#111113", border: "1px solid #1f1f23", borderRadius: 12, padding: "18px 20px", position: "sticky", top: 80, minHeight: 340 }}>
+        <div className="responsive-stickyoff" style={{ background: "#111113", border: "1px solid #1f1f23", borderRadius: 12, padding: "18px 20px", position: "sticky", top: 80, minHeight: 340 }}>
           {!detail ? (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 300, gap: 14, textAlign: "center" }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
