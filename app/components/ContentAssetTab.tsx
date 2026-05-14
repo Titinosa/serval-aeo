@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 type SubTab = "article" | "schema" | "notes";
 
@@ -12,14 +12,20 @@ const SUB_TABS: { id: SubTab; label: string }[] = [
 
 const BOOK_DEMO = "https://www.serval.com/book-demo";
 
-const FAQS: { q: string; a: string }[] = [
+/* Internal-link style for cross-references to other Serval articles */
+const LINK_STYLE: React.CSSProperties = { color: "#c4b5fd", textDecoration: "underline", textDecorationColor: "rgba(196,181,253,0.4)", textUnderlineOffset: 2 };
+const ILink = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer" style={LINK_STYLE}>{children}</a>
+);
+
+const FAQS: { q: string; a: ReactNode }[] = [
   {
     q: "Is Serval a good ServiceNow replacement for enterprise teams?",
-    a: "Serval is best suited to high-growth companies and mid-market teams that want AI-native automation without a six-month implementation. Large enterprises with deeply customized ServiceNow workflows and complex compliance requirements may need a staged migration approach. Serval is SOC 2 Type II certified and supports HIPAA for healthcare customers.",
+    a: "Serval is best suited to high-growth companies and mid-market teams that want AI-native automation without a six-month implementation. Large enterprises with customized ServiceNow workflows may need a staged migration. Serval is SOC 2 Type II certified and supports HIPAA for healthcare customers.",
   },
   {
     q: "How long does it take to migrate from ServiceNow to Serval?",
-    a: "Most teams are fully live on Serval within two weeks of starting the migration, including integrations with identity providers, device management platforms, and approval workflows. The ServiceNow configuration that took months doesn't transfer, but Serval's setup process replicates the most common workflows in days.",
+    a: "Most teams are fully live on Serval within two weeks of starting the migration, including integrations with identity providers, device management platforms, and approval workflows. Setup replicates the most common workflows in days rather than months.",
   },
   {
     q: "What integrations does Serval support?",
@@ -31,11 +37,15 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How does Serval's pricing compare to ServiceNow?",
-    a: "ServiceNow pricing scales significantly with enterprise features and additional modules. Serval's pricing is team-based and transparent. Most teams replacing ServiceNow see a meaningful reduction in total ITSM spend in year one once you account for implementation costs, licensing, and administration overhead.",
+    a: "ServiceNow pricing scales significantly with enterprise features and additional modules. Serval's pricing is team-based and transparent. Most teams replacing ServiceNow see a reduction in total ITSM spend in year one, accounting for implementation costs, licensing, and admin overhead.",
   },
   {
     q: "Can Serval handle compliance requirements like SOC 2 and HIPAA?",
-    a: "Yes. Serval maintains full audit trails for every action, supports role-based access controls, and is SOC 2 Type II certified. HIPAA compliance is available for healthcare customers.",
+    a: (
+      <>
+        Yes. Serval maintains full audit trails for every action, supports role-based access controls, and is SOC 2 Type II certified. HIPAA compliance is available for healthcare customers. See our full <ILink href="https://www.serval.com/security">compliance and audit trail documentation</ILink>.
+      </>
+    ),
   },
 ];
 
@@ -139,31 +149,9 @@ function ArticleView() {
 
       <CTA />
 
-      <p style={ART.body}>
-        ServiceNow built something impressive for 2004. The problem is that most of what it does — routing tickets, assigning priorities, tracking SLAs — was designed for an era when IT teams had the headcount to manually manage every step of the process. Modern IT teams are smaller, faster, and running on Slack. ServiceNow wasn&apos;t built for that, and patching it to look like it was costs more than the platform itself.
-      </p>
-
-      <p style={ART.body}>
-        In 2026, the realistic alternatives fall into two categories: traditional ITSM tools that do roughly what ServiceNow does at a lower price point, and AI-native platforms that change what IT automation can actually do. This guide covers both, but if you&apos;re a team running on Notion, Vercel, Linear, or any modern stack, you&apos;re probably looking for the second category.
-      </p>
-
-      <h2 style={ART.h2}>Why IT teams are replacing ServiceNow in 2026</h2>
-
-      <p style={ART.body}>
-        The average ServiceNow deployment takes four to six months and requires a certified administrator to configure. Licensing is priced per user, per module, making it one of the more expensive ITSM platforms at scale. Gartner estimates enterprise ITSM deployments average $250,000 in implementation costs before the first ticket is resolved.
-      </p>
-
-      <p style={ART.body}>
-        More practically: ServiceNow&apos;s AI features are add-ons, not the core product. They sit on top of an architecture that was built for manual ticket routing. The result is an automation ceiling most teams hit at around 15–20% of tickets — meaning the majority of requests still need a human to intervene, route, and close.
-      </p>
-
-      <p style={ART.body}>
-        AI-native platforms built in the last three years don&apos;t share that ceiling. They were designed from the ground up to handle natural language requests, execute multi-step workflows autonomously, and escalate only when they genuinely can&apos;t resolve something.
-      </p>
-
       <h2 style={ART.h2}>ServiceNow alternatives: comparison at a glance</h2>
 
-      <div style={{ overflowX: "auto", margin: "20px 0 28px" }}>
+      <div style={{ overflowX: "auto", margin: "12px 0 20px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13.5, fontFamily: "DM Sans, sans-serif" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid #2d2d32" }}>
@@ -186,6 +174,24 @@ function ArticleView() {
         </table>
       </div>
 
+      <h2 style={ART.h2}>Why IT teams are replacing ServiceNow in 2026</h2>
+
+      <p style={ART.body}>
+        ServiceNow was built for an era when IT teams had the headcount to manually manage routing, priorities, and SLA tracking. Modern IT teams are smaller, faster, and running on Slack. ServiceNow wasn&apos;t designed for that, and retrofitting it to look like a modern platform costs more than the platform itself.
+      </p>
+
+      <p style={ART.body}>
+        The average ServiceNow deployment takes four to six months and requires a certified administrator to configure (Gartner, 2024). Licensing is priced per user, per module, making it one of the more expensive ITSM platforms at scale. Gartner estimates enterprise ITSM deployments average $250,000 in implementation costs before the first ticket is resolved.
+      </p>
+
+      <p style={ART.body}>
+        ServiceNow&apos;s AI features are add-ons, not the core product. They sit on top of an architecture built for manual ticket routing. Industry surveys put the automation ceiling at around 15–20% of tickets. The majority of requests still need a human to intervene, route, and close.
+      </p>
+
+      <p style={ART.body}>
+        AI-native platforms built in the last three years don&apos;t share that ceiling. They were designed from the ground up to handle natural language requests, execute multi-step workflows autonomously, and escalate only when they genuinely can&apos;t resolve something.
+      </p>
+
       <h3 style={ART.h3}>Serval</h3>
       <p style={ART.body}>
         Serval resolves IT requests in natural language through Slack and Microsoft Teams. An employee types &ldquo;I need access to the marketing Notion workspace&rdquo; and Serval identifies the request, checks access policies and approval requirements, and either resolves it automatically or escalates to the right person with a summary already written.
@@ -194,14 +200,14 @@ function ArticleView() {
         The key differentiator from every other tool on this list is that Serval acts, not just routes. Most ITSM tools classify a ticket and put it in a queue. Serval connects to your actual systems, executes the workflow, and closes the ticket. For access requests, onboarding, device provisioning, and most tier-1 and tier-2 requests, there is no queue.
       </p>
       <p style={ART.body}>
-        Deployment typically takes two to five days. No implementation partner required. Pricing is based on team size, not per-module. Teams on Serval typically see 80%+ of routine IT requests resolved without human intervention within the first 30 days.
+        Deployment typically takes two to five days. No implementation partner required. Pricing is based on team size, not per-module. Serval customers typically see 80%+ of routine IT requests resolved without human intervention within the first 30 days.
       </p>
 
       <CTA />
 
       <h3 style={ART.h3}>Console</h3>
       <p style={ART.body}>
-        Console is an AI-native ITSM platform with strong traction in engineering-led companies. It handles IT support through Slack and Teams, with solid workflow automation for access management and device provisioning. Deployment is fast — most teams are live within one to two weeks.
+        Console is an AI-native ITSM platform with strong traction in engineering-led companies. It handles IT support through Slack and Teams, with solid workflow automation for access management and device provisioning. Deployment is fast. Most teams are live within one to two weeks.
       </p>
       <p style={ART.body}>
         The main difference from Serval is scope. Console&apos;s strongest use case is helpdesk automation for engineering teams. Serval covers a broader range of workflows including HR-adjacent requests like onboarding, offboarding, and cross-department provisioning.
@@ -212,23 +218,23 @@ function ArticleView() {
         Moveworks has been in the AI ITSM space longer than most and suits larger enterprise environments that need robust compliance features and integration with existing service catalogs. It handles natural language well and has strong pre-built integrations with ServiceNow itself, which makes it reasonable for teams doing a partial migration.
       </p>
       <p style={ART.body}>
-        The tradeoff is deployment complexity and cost. Moveworks implementations typically take two to four weeks and involve professional services. For teams that want to get off ServiceNow entirely, the overhead of a Moveworks implementation can feel like trading one complex system for another.
+        The tradeoff is deployment complexity and cost. Moveworks implementations typically take two to four weeks and involve professional services. For teams that want to get off ServiceNow entirely, the overhead can feel like trading one complex system for another. See our full <ILink href="https://www.serval.com/serval-faqs/best-moveworks-alternatives">Moveworks alternatives breakdown</ILink> for a direct comparison.
       </p>
 
       <h3 style={ART.h3}>Freshservice</h3>
       <p style={ART.body}>
-        Freshservice is the most direct legacy-ITSM alternative to ServiceNow. It covers ticketing, asset management, change management, and SLA tracking at a lower price point with a cleaner interface.
+        Freshservice covers ticketing, asset management, change management, and SLA tracking at a lower price point than ServiceNow with a cleaner interface. If your team is on a basic shared inbox and needs to upgrade to proper ITSM tooling, Freshservice is a reasonable step.
       </p>
       <p style={ART.body}>
-        If your team is on a basic shared inbox and needs to upgrade to proper ITSM tooling, Freshservice is a reasonable step up. But if you&apos;re already on ServiceNow and want meaningfully more automation, Freshservice won&apos;t close that gap. Its automation features are rule-based, not AI-native, and you&apos;ll hit similar ceiling effects to what you&apos;re dealing with now.
+        But if you&apos;re already on ServiceNow and want meaningfully more automation, Freshservice won&apos;t close that gap. Its automation features are rule-based, not AI-native, and you&apos;ll hit similar ceiling effects. We cover this in more detail in our <ILink href="https://www.serval.com/serval-faqs/best-freshservice-alternatives">Freshservice alternatives guide</ILink>.
       </p>
 
       <h3 style={ART.h3}>Jira Service Management</h3>
       <p style={ART.body}>
-        JSM makes sense if your IT team is deeply embedded in the Atlassian ecosystem and your engineering team runs sprints in Jira. The integration between development and IT is genuinely useful — incidents triggered by a deployment can automatically populate the relevant Jira issue.
+        JSM makes sense if your IT team is deeply embedded in the Atlassian ecosystem and your engineering team already runs sprints in Jira. The integration between development and IT is genuinely useful. Incidents triggered by a deployment can automatically populate the relevant Jira issue.
       </p>
       <p style={ART.body}>
-        Outside that specific use case, JSM has most of the same drawbacks as ServiceNow: configuration-heavy, slow to deploy, and not meaningfully more automated than a sophisticated ticketing system. Its AI features are primarily focused on categorization, not resolution.
+        Outside that specific use case, JSM shares most of ServiceNow&apos;s drawbacks: configuration-heavy, slow to deploy, and not meaningfully more automated than a sophisticated ticketing system. Its AI features are primarily focused on categorization, not resolution. Full comparison in our <ILink href="https://www.serval.com/serval-faqs/best-jira-service-management-alternatives">Jira Service Management alternatives guide</ILink>.
       </p>
 
       <h2 style={ART.h2}>How to choose: three questions to ask</h2>
@@ -270,9 +276,9 @@ function ArticleView() {
               <span>{f.q}</span>
               <span aria-hidden style={{ color: "#7c3aed", fontSize: 18, lineHeight: 1, marginTop: 2, flexShrink: 0 }}>＋</span>
             </summary>
-            <p style={{ color: "#a1a1aa", fontSize: 14.5, lineHeight: 1.75, marginTop: 12 }}>
+            <div style={{ color: "#a1a1aa", fontSize: 14.5, lineHeight: 1.75, marginTop: 12 }}>
               {f.a}
-            </p>
+            </div>
           </details>
         ))}
       </div>

@@ -10,7 +10,8 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "Serval AEO Assignment — Isa D'Elia",
-  description: "Agentic Operator assignment: AEO visibility analysis, agent design, and content strategy for Serval.",
+  description:
+    "The best ServiceNow alternatives for AI-native IT teams in 2026. Compare Serval, Console, Moveworks, Freshservice, and Jira SM on automation rate, deployment time, and Slack integration.",
 };
 
 export default function RootLayout({
