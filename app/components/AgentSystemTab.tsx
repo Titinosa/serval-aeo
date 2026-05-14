@@ -90,12 +90,9 @@ export default function AgentSystemTab() {
 
   return (
     <div>
-      <h2 className="title-glow" style={{ fontSize: "clamp(1.6rem,3vw,2.25rem)", fontWeight: 800, letterSpacing: "-0.025em", marginBottom: 16, lineHeight: 1.1 }}>
+      <h2 className="title-glow" style={{ fontSize: "clamp(1.6rem,3vw,2.25rem)", fontWeight: 800, letterSpacing: "-0.025em", marginBottom: 24, lineHeight: 1.1 }}>
         Agent-Powered Content System
       </h2>
-      <p style={{ color: "#a1a1aa", fontSize: 14, marginBottom: 24, maxWidth: 640, lineHeight: 1.65 }}>
-        The full agent architecture that closes the visibility gaps. Phase 1 is live within weeks; Phase 2 layers on once volume justifies it.
-      </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 290px", gap: 16, alignItems: "start" }}>
 
