@@ -300,11 +300,8 @@ function SchemaView() {
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto" }}>
-      <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
+      <p style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 16 }}>
         FAQPage JSON-LD
-      </p>
-      <p style={{ color: "#d4d4d8", fontSize: 15, lineHeight: 1.75, marginBottom: 20 }}>
-        Injected into the article&apos;s page <code style={{ color: "#c4b5fd", background: "rgba(124,58,237,0.08)", padding: "1px 6px", borderRadius: 4, fontSize: 13 }}>&lt;head&gt;</code>. This is what makes the FAQ answers eligible to be surfaced directly in Google AI Overviews, Perplexity, and ChatGPT citations. Each question/answer pair maps 1:1 to the collapsible FAQs at the bottom of the article.
       </p>
 
       <pre style={{
@@ -323,7 +320,7 @@ function SchemaView() {
       </pre>
 
       <p style={{ color: "#71717a", fontSize: 12.5, lineHeight: 1.6, marginTop: 16, fontStyle: "italic" }}>
-        Validation: pasted into Google&apos;s Rich Results Test → 6/6 valid FAQPage items, no errors, no warnings.
+        Validation: pasted into Google&apos;s Rich Results Test → 6/6 valid FAQPage items.
       </p>
     </div>
   );
