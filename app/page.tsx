@@ -100,7 +100,10 @@ export default function Home() {
               <span style={{ color: "var(--text-muted)", fontSize: 13, letterSpacing: "0.02em" }}>
                 AEO Assignment
               </span>
-              <span
+              <a
+                href="https://www.linkedin.com/in/isabelcrdelia/"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   background: "rgba(124,58,237,0.12)",
                   border: "1px solid rgba(124,58,237,0.3)",
@@ -110,10 +113,11 @@ export default function Home() {
                   fontSize: 12,
                   fontWeight: 500,
                   letterSpacing: "0.03em",
+                  textDecoration: "none",
                 }}
               >
                 Isa D&apos;Elia
-              </span>
+              </a>
             </div>
           </div>
         </header>
@@ -256,7 +260,15 @@ export default function Home() {
           }}
         >
           <p style={{ color: "var(--text-muted)", fontSize: 12, letterSpacing: "0.05em" }}>
-            Prepared for Serval · Agentic Operator Role · Isa D&apos;Elia
+            Prepared for Serval · Agentic Operator Role ·{" "}
+            <a
+              href="https://www.linkedin.com/in/isabelcrdelia/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#a78bfa", textDecoration: "underline", textDecorationColor: "rgba(167,139,250,0.4)" }}
+            >
+              Isa D&apos;Elia
+            </a>
           </p>
         </footer>
       </div>
