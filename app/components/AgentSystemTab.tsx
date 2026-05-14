@@ -72,18 +72,19 @@ export default function AgentSystemTab() {
     );
   };
 
-  /* helper: DB node (dashed) */
+  /* helper: DB node (amber dashed, with DB icon) */
   const DB = (id: string, x: number, y: number, w: number, h: number, title: string, sub: string) => {
     const active = sel === id;
     return (
       <g key={id} onClick={() => click(id)} style={{ cursor: "pointer" }}>
         <rect x={x} y={y} width={w} height={h} rx={6}
-          fill={DB_NODE.fill} stroke={active ? "#71717a" : DB_NODE.stroke}
-          strokeWidth={active ? 1.5 : 0.8} strokeDasharray="4 2" />
-        <text x={x+w/2} y={y+13} textAnchor="middle" dominantBaseline="central"
-          fill="#a1a1aa" fontSize={11} fontWeight="600" style={{ fontFamily: "DM Sans, sans-serif" }}>{title}</text>
-        <text x={x+w/2} y={y+26} textAnchor="middle" dominantBaseline="central"
-          fill={SUB_C} fontSize={10} style={{ fontFamily: "DM Sans, sans-serif" }}>{sub}</text>
+          fill="rgba(161,79,5,0.08)" stroke={active ? "#fbbf24" : DB_C}
+          strokeWidth={active ? 1.5 : 1} strokeDasharray="4 2" />
+        <image href="/db-orange.png" x={x+8} y={y+(h-13)/2} width={13} height={13} />
+        <text x={x+w/2+5} y={y+13} textAnchor="middle" dominantBaseline="central"
+          fill="#fbbf24" fontSize={11} fontWeight="600" style={{ fontFamily: "DM Sans, sans-serif" }}>{title}</text>
+        <text x={x+w/2+5} y={y+26} textAnchor="middle" dominantBaseline="central"
+          fill="#b45309" fontSize={10} style={{ fontFamily: "DM Sans, sans-serif" }}>{sub}</text>
       </g>
     );
   };
