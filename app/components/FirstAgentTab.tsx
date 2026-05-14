@@ -1,6 +1,33 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+
+/* ── Inline icons for claude-sonnet and DB tokens in detail text ──────── */
+const ICON_RE = /(claude-sonnet|Published Content DB|Performance DB)/g;
+
+function withIcons(text: string): React.ReactNode {
+  const parts = text.split(ICON_RE);
+  return parts.map((p, i) => {
+    if (p === "claude-sonnet") {
+      return (
+        <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 3, verticalAlign: "baseline" }}>
+          {p}
+          <Image src="/claude-color.png" alt="" width={11} height={11} style={{ display: "inline-block", verticalAlign: "middle" }} />
+        </span>
+      );
+    }
+    if (p === "Published Content DB" || p === "Performance DB") {
+      return (
+        <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 3, verticalAlign: "baseline" }}>
+          {p}
+          <Image src="/db-orange.png" alt="" width={10} height={10} style={{ display: "inline-block", verticalAlign: "middle" }} />
+        </span>
+      );
+    }
+    return p;
+  });
+}
 
 /* ── Step detail data ──────────────────────────────────────────────────── */
 interface Criterion { text: string; why: string; pts: string; }
@@ -282,7 +309,7 @@ export default function FirstAgentTab() {
             <div>
               <div style={{ marginBottom: 14 }}>
                 <p style={{ color: "#fafafa", fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{detail.name}</p>
-                <p style={{ color: "#52525b", fontSize: 12 }}>{detail.tool}</p>
+                <p style={{ color: "#52525b", fontSize: 12 }}>{withIcons(detail.tool)}</p>
               </div>
               <div style={{ borderTop: "1px solid #1f1f23", marginBottom: 14 }}/>
 
@@ -310,7 +337,7 @@ export default function FirstAgentTab() {
                   )}
                   <div style={{ borderTop: "1px solid #1f1f23", marginTop: 14, paddingTop: 14 }}>
                     <p style={{ color: "#52525b", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>Guardrails</p>
-                    <p style={{ color: "#a1a1aa", fontSize: 12.5, lineHeight: 1.6 }}>{detail.guardrail}</p>
+                    <p style={{ color: "#a1a1aa", fontSize: 12.5, lineHeight: 1.6 }}>{detail.guardrail && withIcons(detail.guardrail)}</p>
                   </div>
                 </div>
               ) : (
@@ -324,7 +351,7 @@ export default function FirstAgentTab() {
                   ].filter(f => f.value).map(({ label, value, italic }) => (
                     <div key={label}>
                       <p style={{ color: "#52525b", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{label}</p>
-                      <p style={{ color: "#a1a1aa", fontSize: 12.5, lineHeight: 1.65, fontStyle: italic ? "italic" : "normal" }}>{value}</p>
+                      <p style={{ color: "#a1a1aa", fontSize: 12.5, lineHeight: 1.65, fontStyle: italic ? "italic" : "normal" }}>{value && withIcons(value)}</p>
                     </div>
                   ))}
                 </div>
