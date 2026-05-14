@@ -413,12 +413,13 @@ function NotesView() {
 
         <p style={{ color: "#fafafa", fontWeight: 600, fontSize: 14, marginBottom: 10 }}>What makes this article engineered to win citations</p>
         <Bullets items={[
-          "Opens with a direct, declarative answer to the target query in the first sentence (the format LLMs cite)",
-          "Mentions Serval by name in sentence 1 — visibility without brand mention doesn’t convert",
-          "Comparison table is above the fold — mirrors how the top cited pages in our dataset are structured",
-          "Serval is featured first, most prominently, and with the most detail",
-          "FAQ section at the bottom generates FAQPage JSON-LD schema — Eesel.ai uses this on 100% of their posts and is the #5 most cited domain",
-          "Written in plain language targeting a 9th grade reading level — easier for LLMs to retrieve and paraphrase",
+          "First paragraph answers the target query in three sentences and can stand alone as a citable response",
+          "Comparison table above the fold",
+          "Serval appears first in the table and first in the tool sections",
+          "FAQPage JSON-LD schema attached: six Q&A pairs under 300 characters each",
+          "Competitor names appear throughout",
+          "Internal links to three existing cited Serval articles",
+          "Targets the only topic in the dataset with real external search volume",
         ]} />
       </div>
 
