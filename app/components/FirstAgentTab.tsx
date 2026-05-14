@@ -212,7 +212,7 @@ export default function FirstAgentTab() {
             <span style={{ color: "#3f3f46", fontSize: 11, fontStyle: "italic" }}>← click any step for detail</span>
           </div>
 
-          <svg width="100%" viewBox="0 0 388 972" style={{ display: "block" }}>
+          <svg width="100%" viewBox="0 0 460 972" style={{ display: "block" }}>
             <defs>
               <marker id="fl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
                 <path d="M2 1L8 5L2 9" fill="none" stroke={FLOW} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
