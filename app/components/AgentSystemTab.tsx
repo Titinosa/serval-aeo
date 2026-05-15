@@ -105,7 +105,7 @@ export default function AgentSystemTab() {
             <span style={{ color: "#3f3f46", fontSize: 11, fontStyle: "italic" }}>← click any node for details</span>
           </div>
 
-          <svg width="100%" viewBox="0 0 730 668" role="img" style={{ minWidth: 600, display: "block" }}>
+          <svg width="100%" viewBox="0 0 750 840" role="img" style={{ minWidth: 600, display: "block" }}>
             <defs>
               {/* flow arrow */}
               <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
@@ -125,106 +125,121 @@ export default function AgentSystemTab() {
             <line x1="320" y1="13" x2="348" y2="13" stroke={DB_C} strokeWidth={1} strokeDasharray="3 2" markerEnd="url(#dbarr)"/>
             <text x="352" y="13" dominantBaseline="central" fill="#92400e" fontSize={10.5} style={{ fontFamily: "DM Sans, sans-serif" }}>DB read / write</text>
 
-            {/* ── Tier labels ── */}
-            {([ ["sensing",60], ["data",128], ["routing",196], ["utilities",264], ["execution",344], ["gate",420], ["post",492], ["output",568] ] as [string,number][]).map(([label,y]) => (
+            {/* ── Tier labels (rotated, in left margin) ── */}
+            {([ ["sensing",60], ["data",158], ["routing",254], ["utilities",347], ["execution",462], ["gate",572], ["post",672], ["output",772] ] as [string,number][]).map(([label,y]) => (
               <text key={label} x="7" y={y} textAnchor="middle" dominantBaseline="central"
                 fill={TIER_C} fontSize={9.5}
                 style={{ fontFamily: "DM Sans, sans-serif" }}
                 transform={`rotate(-90,7,${y})`}>{label}</text>
             ))}
 
-            {/* ── DB arrows (amber dashed) ── */}
+            {/* ── DB arrows (amber dashed) — only through inter-node gaps ── */}
             <g stroke={DB_C} strokeWidth="0.9" strokeDasharray="3 2" fill="none">
-              <path d="M97 82 Q163 96 230 110"  markerEnd="url(#dbarr)"/>
-              <path d="M212 82 Q148 96 86 110"  markerEnd="url(#dbarr)"/>
-              <path d="M253 82 L236 110"        markerEnd="url(#dbarr)"/>
-              <path d="M288 82 Q330 96 372 110" markerEnd="url(#dbarr)"/>
-              <path d="M372 146 Q340 160 310 174" markerEnd="url(#dbarr)"/>
-              <path d="M40 472 L18 472 L18 128 L22 128" markerEnd="url(#dbarr)"/>
+              {/* meas → perfdb (writes weekly) — gap between pubdb (≤150) and perfdb (≥180) */}
+              <path d="M97 82 Q165 110 244 140"   markerEnd="url(#dbarr)"/>
+              {/* intel → pubdb (reads) — curves left through gap */}
+              <path d="M210 82 Q145 110 86 140"   markerEnd="url(#dbarr)"/>
+              {/* intel → perfdb (reads) — almost straight down */}
+              <path d="M244 82 L244 140"          markerEnd="url(#dbarr)"/>
+              {/* intel → expq (writes hypotheses) — gap between perfdb (≤308) and expq (≥338) */}
+              <path d="M280 82 Q323 110 402 140"  markerEnd="url(#dbarr)"/>
+              {/* expq → orch (reads experiments) */}
+              <path d="M402 176 Q380 200 350 232" markerEnd="url(#dbarr)"/>
+              {/* dist → pubdb (writes article on publish) — outer left margin route */}
+              <path d="M22 665 L14 665 L14 152 L22 152" markerEnd="url(#dbarr)"/>
             </g>
+
+            {/* horizontal label for the dist → pubdb back arrow, in the clear gap between utilities (≤369) and execution (≥440) */}
+            <text x="22" y="408" dominantBaseline="central" fill="#92400e" fontSize={9.5} style={{ fontFamily: "DM Sans, sans-serif" }}>↑ dist writes to pub DB</text>
 
             {/* ── Phase 1 flow arrows ── */}
             <g stroke={FLOW_C} strokeWidth="1" fill="none">
-              <line x1="172" y1="60" x2="176" y2="60" markerEnd="url(#arr)"/>
-              <path d="M251 82 L158 82 L158 174 L186 174" markerEnd="url(#arr)"/>
-              <path d="M232 218 Q184 246 70 324" markerEnd="url(#arr)"/>
-              <path d="M260 218 Q242 250 180 324" markerEnd="url(#arr)"/>
-              {/* orch → schema (schema now at x=588, center=653) */}
-              <path d="M398 218 L448 248 L653 324" markerEnd="url(#arr)"/>
-              <line x1="70" y1="368" x2="168" y2="400" markerEnd="url(#arr)"/>
-              <line x1="180" y1="368" x2="200" y2="400" markerEnd="url(#arr)"/>
-              {/* schema right edge → pipeline signals (schema right = 718) */}
-              <path d="M718 346 L726 346 L726 568 L630 568" strokeDasharray="4 3" markerEnd="url(#arr)"/>
-              <path d="M162 444 Q132 460 106 472" markerEnd="url(#arr)"/>
-              <path d="M106 516 Q106 550 220 568" markerEnd="url(#arr)"/>
-              <line x1="424" y1="568" x2="440" y2="568" strokeDasharray="4 3" markerEnd="url(#arr)"/>
+              {/* intel → orch — straight down through gap between perfdb (≤308) and expq (≥338) */}
+              <path d="M320 82 L320 232" markerEnd="url(#arr)"/>
+
+              {/* orch fan-out — six departure points evenly across the bottom edge.
+                  Each path drops to a clear horizontal lane (y=405, below utilities) then turns down to the agent. */}
+              <path d="M195 276 L195 405 L70 405 L70 440"   markerEnd="url(#arr)"/>{/* orch → blog */}
+              <path d="M215 276 L215 405 L180 405 L180 440" markerEnd="url(#arr)"/>{/* orch → faq */}
+              <path d="M432 276 L432 405 L653 405 L653 440" markerEnd="url(#arr)"/>{/* orch → schema (far right) */}
+
+              {/* blog → human (L into top of gate) */}
+              <path d="M70 484 L70 525 L170 525 L170 550"  markerEnd="url(#arr)"/>
+              {/* faq → human (straight down — both x ranges overlap) */}
+              <path d="M180 484 L180 550" markerEnd="url(#arr)"/>
+
+              {/* schema → pipeline (deploys + reports) — outer right margin */}
+              <path d="M718 462 L732 462 L732 770 L630 770" strokeDasharray="4 3" markerEnd="url(#arr)"/>
+
+              {/* human → dist */}
+              <path d="M200 594 L200 625 L106 625 L106 650" markerEnd="url(#arr)"/>
+
+              {/* dist → pub */}
+              <path d="M106 694 L106 728 L300 728 L300 750" markerEnd="url(#arr)"/>
+
+              {/* pub → pipeline (measurement signal, dashed) */}
+              <path d="M424 772 L440 772" strokeDasharray="4 3" markerEnd="url(#arr)"/>
             </g>
 
-            {/* Feedback loop (very dim) */}
-            <path d="M176 590 L18 590 L18 60 L22 60" stroke="#252528" strokeWidth="1" strokeDasharray="4 3" markerEnd="url(#arr)" fill="none"/>
-            <text x="215" y="610" textAnchor="middle" dominantBaseline="central" fill="#2d2d32" fontSize={9.5} style={{ fontFamily: "DM Sans, sans-serif" }}>performance data feeds back to measurement</text>
+            {/* Feedback loop (very dim) — outer-outer left margin so it doesn't collide with the DB back arrow at x=14 */}
+            <path d="M176 794 L6 794 L6 60 L22 60" stroke="#252528" strokeWidth="1" strokeDasharray="4 3" markerEnd="url(#arr)" fill="none"/>
+            <text x="300" y="822" textAnchor="middle" dominantBaseline="central" fill="#2d2d32" fontSize={9.5} style={{ fontFamily: "DM Sans, sans-serif" }}>performance data feeds back to measurement</text>
 
             {/* ── Phase 2 flow arrows (dim) ── */}
             <g stroke={FLOW_C} strokeWidth="1" fill="none" opacity={0.3}>
-              <path d="M563 82 Q563 136 434 174" markerEnd="url(#arr)"/>
-              {/* orch → reddit */}
-              <path d="M296 218 Q264 254 296 324" markerEnd="url(#arr)"/>
-              {/* orch → youtube */}
-              <path d="M346 218 Q432 254 406 324" markerEnd="url(#arr)"/>
-              {/* orch → outreach (outreach center x=515) */}
-              <path d="M398 218 Q460 258 515 324" markerEnd="url(#arr)"/>
-              {/* reddit → human */}
-              <line x1="296" y1="368" x2="240" y2="400" markerEnd="url(#arr)"/>
-              {/* youtube → human */}
-              <line x1="406" y1="368" x2="278" y2="400" markerEnd="url(#arr)"/>
-              {/* outreach → human (outreach center x=515, human gate x=112 w=210 right=322) */}
-              <path d="M515 368 Q420 405 322 400" markerEnd="url(#arr)"/>
-              <path d="M308 444 Q380 460 472 472" strokeDasharray="4 3" markerEnd="url(#arr)"/>
+              {/* refresh → orch (P2 brief refresh) */}
+              <path d="M563 82 Q563 155 434 232" markerEnd="url(#arr)"/>
+
+              {/* orch fan-out to P2 agents (continues from Phase 1 fan-out — same horizontal lane y=405) */}
+              <path d="M235 276 L235 405 L290 405 L290 440" markerEnd="url(#arr)"/>{/* orch → reddit */}
+              <path d="M405 276 L405 405 L400 405 L400 440" markerEnd="url(#arr)"/>{/* orch → youtube */}
+              <path d="M420 276 L420 405 L515 405 L515 440" markerEnd="url(#arr)"/>{/* orch → outreach */}
+
+              {/* P2 execution → human (different y heights so paths don't overlap) */}
+              <path d="M290 484 L290 550" markerEnd="url(#arr)"/>{/* reddit → human */}
+              <path d="M400 484 L400 520 L260 520 L260 550" markerEnd="url(#arr)"/>{/* youtube → human */}
+              <path d="M515 484 L515 535 L290 535 L290 550" markerEnd="url(#arr)"/>{/* outreach → human */}
             </g>
 
-            {/* ── Phase 2 note ── */}
-            <text x="22" y="248" dominantBaseline="central" fill="#2e2e34" fontSize={10} style={{ fontFamily: "DM Sans, sans-serif", fontStyle: "italic" }}>
-              Phase 2: Research + Visual Asset agents extend the pipeline from here
+            {/* ── Phase 2 section divider — sits cleanly between routing tier (bottom 276) and utilities tier (top 325) ── */}
+            <line x1="22" y1="300" x2="170" y2="300" stroke="#27272a" strokeWidth="0.5" strokeDasharray="2 3"/>
+            <text x="178" y="300" dominantBaseline="central" fill="#3f3f46" fontSize={10} fontStyle="italic" style={{ fontFamily: "DM Sans, sans-serif" }}>
+              Phase 2 — Research + Visual Asset agents extend the pipeline
             </text>
-
-            {/* ── Voice in prompt notes ── */}
-            <text x="70"  y="378" textAnchor="middle" fill="#2d2d32" fontSize={9} style={{ fontFamily: "DM Sans, sans-serif" }}>* voice in prompt</text>
-            <text x="180" y="378" textAnchor="middle" fill="#2d2d32" fontSize={9} style={{ fontFamily: "DM Sans, sans-serif" }}>* voice in prompt</text>
+            <line x1="540" y1="300" x2="730" y2="300" stroke="#27272a" strokeWidth="0.5" strokeDasharray="2 3"/>
 
             {/* ── PHASE 1 NODES ── */}
-            {N("meas",   22, 38, 150, 44, "gray",   "Measurement agent",   "ProFound + analytics")}
-            {N("intel",  176, 38, 150, 44, "teal",   "Intelligence agent",  "Gap analysis + briefs")}
-            {DB("pubdb",  22, 110, 128, 36, "Published content DB", "Duplicate check")}
-            {DB("perfdb", 166, 110, 128, 36, "Performance DB",       "What worked + why")}
-            {DB("expq",   308, 110, 128, 36, "Experiment queue",     "Formats to A/B test")}
-            {N("orch",   186, 174, 248, 44, "purple", "Content orchestrator",  "Prioritises + routes briefs")}
-            {N("blog",    22, 324,  96, 44, "blue",   "Blog agent",           "Comparisons")}
-            {N("faq",    132, 324,  96, 44, "blue",   "FAQ agent",            "FAQ + schema")}
-            {/* schema moved right to x=588 to make room for outreach in execution layer */}
-            {N("schema", 588, 324, 130, 44, "amber",  "Schema agent",         "JSON-LD + llms.txt")}
-            {N("human",  112, 400, 210, 44, "coral",  "Human review gate",    "Voice + quality check")}
-            {N("dist",    22, 472, 168, 44, "teal",   "Distribution agent",   "GSC + sitemap + social")}
-            {N("pub",    176, 546, 248, 44, "green",  "Published content",    "Live + indexed")}
+            {N("meas",    22,  38, 150, 44, "gray",   "Measurement agent",     "ProFound + analytics")}
+            {N("intel",  176,  38, 150, 44, "teal",   "Intelligence agent",    "Gap analysis + briefs")}
+            {DB("pubdb",  22, 140, 128, 36, "Published content DB", "Duplicate check")}
+            {DB("perfdb",180, 140, 128, 36, "Performance DB",       "What worked + why")}
+            {DB("expq",  338, 140, 128, 36, "Experiment queue",     "Formats to A/B test")}
+            {N("orch",   186, 232, 248, 44, "purple", "Content orchestrator",  "Prioritises + routes briefs")}
+            {N("blog",    22, 440,  96, 44, "blue",   "Blog agent",            "Comparisons")}
+            {N("faq",    132, 440,  96, 44, "blue",   "FAQ agent",             "FAQ + schema")}
+            {N("schema", 588, 440, 130, 44, "amber",  "Schema agent",          "JSON-LD + llms.txt")}
+            {N("human",  112, 550, 210, 44, "coral",  "Human review gate",     "Voice + quality check")}
+            {N("dist",    22, 650, 168, 44, "teal",   "Distribution agent",    "GSC + sitemap + social")}
+            {N("pub",    176, 750, 248, 44, "green",  "Published content",     "Live + indexed")}
             {/* Pipeline signals — dashed border */}
             <g onClick={() => click("pipeline")} style={{ cursor: "pointer" }}>
-              <rect x={440} y={546} width={190} height={44} rx={8}
+              <rect x={440} y={750} width={190} height={44} rx={8}
                 fill={sel === "pipeline" ? "rgba(4,120,87,0.15)" : "rgba(4,120,87,0.07)"}
                 stroke={sel === "pipeline" ? "#34d399" : "rgba(16,185,129,0.35)"}
                 strokeWidth={sel === "pipeline" ? 1.5 : 0.8} strokeDasharray="4 2"/>
-              <text x={535} y={562} textAnchor="middle" dominantBaseline="central"
+              <text x={535} y={766} textAnchor="middle" dominantBaseline="central"
                 fill="#34d399" fontSize={12} fontWeight="600" style={{ fontFamily: "DM Sans, sans-serif" }}>Pipeline signals</text>
-              <text x={535} y={577} textAnchor="middle" dominantBaseline="central"
+              <text x={535} y={781} textAnchor="middle" dominantBaseline="central"
                 fill={SUB_C} fontSize={10} style={{ fontFamily: "DM Sans, sans-serif" }}>Demos · branded search · HubSpot</text>
             </g>
 
             {/* ── PHASE 2 NODES ── */}
-            {N("refresh",  488,  38, 150, 44, "teal",   "Refresh agent",          "Staleness detection",   true)}
-            {N("research",  22, 242, 148, 44, "purple", "Research agent",         "Competitor intel",      true)}
-            {N("visual",   250, 242, 150, 44, "purple", "Visual asset agent",     "Images + thumbnails",   true)}
-            {N("reddit",   242, 324,  96, 44, "blue",   "Reddit agent",           "Community",             true)}
-            {N("youtube",  352, 324,  96, 44, "blue",   "YouTube agent",          "Scripts + assets",      true)}
-            {/* outreach moved to execution layer (was post layer) */}
-            {N("outreach", 460, 324, 110, 44, "pink",   "Roundup outreach",       "Get into roundups",     true)}
+            {N("refresh",  488,  38, 150, 44, "teal",   "Refresh agent",      "Staleness detection",   true)}
+            {N("research",  22, 325, 148, 44, "purple", "Research agent",     "Competitor intel",      true)}
+            {N("visual",   250, 325, 150, 44, "purple", "Visual asset agent", "Images + thumbnails",   true)}
+            {N("reddit",   242, 440,  96, 44, "blue",   "Reddit agent",       "Community",             true)}
+            {N("youtube",  352, 440,  96, 44, "blue",   "YouTube agent",      "Scripts + assets",      true)}
+            {N("outreach", 460, 440, 110, 44, "pink",   "Roundup outreach",   "Get into roundups",     true)}
           </svg>
         </div>
 

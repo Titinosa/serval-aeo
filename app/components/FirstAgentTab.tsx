@@ -21,13 +21,13 @@ function NodeBadges({ y, claude, db }: { y: number; claude?: boolean; db?: boole
 }
 
 /* ── Inline icons for claude-sonnet and DB tokens in detail text ──────── */
-const ICON_RE = /(claude-sonnet|Published Content DB|Performance DB)/gi;
+const ICON_RE = /(claude-(?:sonnet|opus)(?:-4-\d+)?|Published Content DB|Performance DB)/gi;
 
 function withIcons(text: string): React.ReactNode {
   const parts = text.split(ICON_RE);
   return parts.map((p, i) => {
     const lower = p.toLowerCase();
-    if (lower === "claude-sonnet") {
+    if (lower.startsWith("claude-")) {
       return (
         <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 3, verticalAlign: "baseline" }}>
           {p}
@@ -66,11 +66,11 @@ const STEPS: Record<string, StepDetail> = {
   },
   dbcheck: {
     name: "02 · Published Content DB check",
-    tool: "Vector similarity search + claude-sonnet (redundancy judgment)",
+    tool: "Vector similarity search (cosine, no model) + claude-opus-4-6 (redundancy judgment)",
     input: "Extracted angle list from step 01.",
     output: "Redundancy recommendation (proceed / modify / return) with written rationale. Top 3 most semantically similar published articles, pre-ranked by cosine similarity score, passed forward in the brief object for use in step 09. These are not just redundancy signals — they are the internal link candidates.",
     prompt: "System: \"You are a content strategist evaluating whether a proposed article is worth publishing. Here are the angles the proposed article will cover: [angle list]. Here are the most semantically similar articles already published: [top matches from vector search]. Answer one question: would a reader who has already read the existing articles get meaningful new value from this one — different competitor, different buyer stage, different use case, or meaningfully fresher data? Output: proceed (clear differentiation), modify (differentiation exists but brief needs sharpening — specify which angles to adjust), or return (no meaningful differentiation — specify which existing article covers this ground and recommend refreshing it instead). Also output the top 3 most semantically similar articles ranked by similarity for use as internal link candidates in step 09.\"",
-    guardrail: "No fixed similarity threshold — the model reasons about differentiation, not raw similarity. All ITSM content is semantically close by nature; the question is whether the differentiation is meaningful enough for a reader, not whether the cosine score crosses a number. If the model cannot articulate a clear reason to proceed, it does not proceed. Top 3 similar articles are always passed forward regardless of the proceed/modify/return decision.",
+    guardrail: "Vector similarity search runs first with no model — pure cosine distance against the embeddings in Published Content DB. The AI call only fires for the reasoning step: is the differentiation meaningful enough? That judgment goes to claude-opus-4-6, not Sonnet. This is the highest-stakes decision in the pipeline — a wrong call either wastes the entire downstream workflow or kills a good article. The cost difference per call is justified. No fixed similarity threshold — the model reasons about differentiation, not raw similarity. All ITSM content is semantically close by nature; the question is whether the differentiation is meaningful enough for a reader, not whether the cosine score crosses a number. If the model cannot articulate a clear reason to proceed, it does not proceed. Top 3 similar articles are always passed forward regardless of the proceed/modify/return decision.",
   },
   research: {
     name: "03 · Competitor research", tool: "web_search + Anthropic API (summariser)",
@@ -87,11 +87,12 @@ const STEPS: Record<string, StepDetail> = {
     guardrail: "Outline must include FAQ section — required for FAQPage schema in step 08. Serval must not appear last in the comparison. JSON output required for reliable parsing in step 05.",
   },
   draft: {
-    name: "05 · Write full draft", tool: "claude-sonnet · Serval voice guide injected at system prompt level (built from top 10 performing articles)",
+    name: "05 · Write full draft",
+    tool: "claude-opus-4-6 · voice guide in system prompt",
     input: "Outline JSON from step 04 · voice guide · research brief · internal link map from step 02.",
     output: "Full article draft 1,500–2,500 words. Comparison format. Internal link placeholders [LINK:slug]. CTA above fold and at end. FAQ section. Meta description suggestion. Target prompts list the article is designed to rank for.",
     prompt: "System: \"You are a content writer for Serval, an AI-native ITSM platform. [Voice guide: 10 example articles injected]. Write a comparison article following this outline exactly. Rules: answer the target query directly in the first sentence of the intro. Mention Serval by name in the first 200 words. No em dashes. No leverage, delve, comprehensive, tapestry. CTAs: 'See how Serval compares →' above fold and at end.\"",
-    guardrail: "Hard pre-checks: Serval in first 200 words · CTA present above fold and at end · article ≥1,500 words · FAQ section present. Any failure → retry once, then escalate. No pricing claims without sourcing from Serval public pricing page. No customer names without verification.",
+    guardrail: "Draft generation uses claude-opus-4-6, not Sonnet. The article either gets cited by LLMs or it does not — this is the output that determines whether the entire pipeline was worth running. A better draft means fewer revision loops in step 07, which reduces total pipeline cost. All other steps use claude-sonnet-4-6 where the tasks are structured and well-defined enough that Sonnet performs at ceiling. Hard pre-checks: Serval in first 200 words · CTA present above fold and at end · article ≥1,500 words · FAQ section present. Any failure → retry once, then escalate. No pricing claims without sourcing from Serval public pricing page. No customer names without verification.",
   },
   eval: {
     name: "06 · Self-evaluation", tool: "claude-sonnet · separate eval system prompt (different context window from draft)",
@@ -300,10 +301,10 @@ export default function FirstAgentTab() {
 
             {/* Workflow nodes */}
             {N("brief",    48, 52, "blue",   "01", "Content brief received",       "from Content orchestrator · JSON")}
-            {N("dbcheck",  126, 52, "teal",   "02", "Published Content DB check",   "vector search · semantic redundancy check",    AMB)}
+            {N("dbcheck",  126, 52, "teal",   "02", "Published Content DB check",   "cosine search + claude-opus-4-6 · redundancy judgment",    AMB)}
             {N("research", 204, 52, "teal",   "03", "Competitor research",          "web_search · top 3 competitor pages")}
             {N("outline",  282, 52, "purple", "04", "Generate outline",             "claude-sonnet · comparison template")}
-            {N("draft",    360, 64, "purple", "05", "Write full draft",             "claude-sonnet · voice guide in prompt", undefined, "1,500–2,500 words · comparison format")}
+            {N("draft",    360, 64, "purple", "05", "Write full draft",             "claude-opus-4-6 · voice guide in prompt", undefined, "1,500–2,500 words · comparison format")}
             {N("eval",     450, 52, "amber",  "06", "Self-evaluation",              "claude-sonnet · 5 criteria · 0–100")}
             {N("decision", 528, 48, "amber",  "07", "Score ≥ 75 / 100?",            "pass or revision loop · max 2 attempts")}
             {N("schema",   602, 52, "purple", "08", "Attach FAQPage schema",        "JSON-LD generator · FAQPage type")}
